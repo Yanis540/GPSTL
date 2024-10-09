@@ -41,7 +41,7 @@ services:
     #networks:
     #  network:
     #    ipv4_address: 172.20.0.4
-  security:
+  back:
     build: .
     restart: on-failure
     ports:
