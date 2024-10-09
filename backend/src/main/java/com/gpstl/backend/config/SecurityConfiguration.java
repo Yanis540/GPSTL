@@ -19,9 +19,6 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
-import static com.gpstl.backend.models.user.Role.*;
-import static org.springframework.http.HttpMethod.*;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -46,10 +43,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("auth/**")
                         .permitAll()
-                        .requestMatchers(POST, "articles/**").hasAnyRole(USER.name(), ADMIN.name())
-                        .requestMatchers(PUT, "articles/**").hasRole(ADMIN.name())
-                        .requestMatchers(DELETE, "articles/**").hasRole(ADMIN.name())
-                        .requestMatchers(GET, "articles/**").hasAnyRole(USER.name(), ADMIN.name())
+                        //.requestMatchers(POST, "articles/**").hasAnyRole(USER.name(), ADMIN.name())
+                        //.requestMatchers(PUT, "articles/**").hasRole(ADMIN.name())
+                        //.requestMatchers(DELETE, "articles/**").hasRole(ADMIN.name())
+                        //.requestMatchers(GET, "articles/**").hasAnyRole(USER.name(), ADMIN.name())
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session ->
