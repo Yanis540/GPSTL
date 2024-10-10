@@ -1,5 +1,8 @@
 package com.gpstl.backend.services;
 
+import com.gpstl.backend.models.user.Recruiter;
+import com.gpstl.backend.models.user.Role;
+import com.gpstl.backend.models.user.Student;
 import com.gpstl.backend.payloads.request.AuthenticationRequest;
 import com.gpstl.backend.payloads.response.AuthenticationResponse;
 import com.gpstl.backend.payloads.request.RegisterRequest;
@@ -35,12 +38,34 @@ public class AuthenticationService {
         if (userExist.isPresent()) {
             return null;
         }
+
+        if(request.getRegisterType().equals("recruiter")) {
+            Recruiter recruiter = new Recruiter();
+            recruiter.setFirstname(request.getFirstname());
+            recruiter.setLastname(request.getLastname());
+            recruiter.setEmail(request.getEmail());
+            recruiter.setPhoto(request.getPhoto());
+            recruiter.setPassword(passwordEncoder.encode(request.getPassword()));
+            recruiter.setCompany(request.getCompany());
+        }
+
+        if(request.getRegisterType().equals("student")) {
+            Student student = new Student();
+            student.setFirstname(request.getFirstname());
+            student.setLastname(request.getLastname());
+            student.setEmail(request.getEmail());
+            student.setPassword(passwordEncoder.encode(request.getPassword()));
+            student.setSkills(request.getSkills());
+            student.setGrades(request.getGrades());
+            student.setField(request.getField());
+        }
+
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
+                .role(Role.USER)
                 .build();
 
         user = userRepository.save(user);

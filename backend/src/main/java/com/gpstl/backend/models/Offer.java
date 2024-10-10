@@ -1,6 +1,8 @@
 package com.gpstl.backend.models;
 
 import com.gpstl.backend.models.candidacy.Candidacy;
+import com.gpstl.backend.models.user.Recruiter;
+import com.gpstl.backend.models.user.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +31,10 @@ public class Offer {
     private String description;
 
     private Date publicationDate;
+
+    @ManyToOne
+    @JoinColumn(name = "recruiter_id")
+    private Recruiter recruiter;
 
     @OneToMany(mappedBy = "offer")
     private List<Candidacy> candidacies;
