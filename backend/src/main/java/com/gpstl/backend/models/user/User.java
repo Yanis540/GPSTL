@@ -1,5 +1,6 @@
 package com.gpstl.backend.models.user;
 
+import com.gpstl.backend.models.candidacy.Candidacy;
 import com.gpstl.backend.models.token.RefreshToken;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "_user")
 public class User implements UserDetails {
     @Id
@@ -31,6 +34,9 @@ public class User implements UserDetails {
     private String email;
 
     private String password;
+
+    @Lob
+    private byte[] photo;
 
     @Enumerated(EnumType.STRING)
     private Role role;

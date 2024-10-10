@@ -29,7 +29,6 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
-    //private final RabbitTemplate rabbitTemplate;
 
     public AuthenticationResponse register(RegisterRequest request) {
         Optional<User> userExist = userRepository.findByEmail(request.getEmail());
@@ -53,8 +52,6 @@ public class AuthenticationService {
                 .stream()
                 .map(SimpleGrantedAuthority::getAuthority)
                 .toList();
-
-        //rabbitTemplate.convertAndSend(RabbitMQConfig.EMAIL_QUEUE, UserMapper.toDTO(user));
 
         return AuthenticationResponse.builder()
                 .accessToken(accessToken)
