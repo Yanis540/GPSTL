@@ -1,9 +1,7 @@
 package com.gpstl.backend.models.candidacy;
 
-import com.gpstl.backend.models.Company;
 import com.gpstl.backend.models.Offer;
 import com.gpstl.backend.models.user.Student;
-import com.gpstl.backend.models.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +21,10 @@ public class Candidacy {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CandidacyStatus status;
 
-    @Column(name = "date_of_candidacy")
+    @Column(name = "date_of_candidacy", nullable = false)
     private Date dateOfCandidacy;
 
     @Column(name = "date_of_response")

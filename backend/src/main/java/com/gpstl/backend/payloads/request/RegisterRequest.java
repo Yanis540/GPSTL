@@ -25,6 +25,5 @@ public class RegisterRequest {
     private List<Referential> skills;
     private List<Referential> grades;
     private Referential field;
-    private String registerType; // différencié étudiant ou recruteur
     private Role role;
 }

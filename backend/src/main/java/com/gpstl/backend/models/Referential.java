@@ -14,7 +14,9 @@ public class Referential {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private ReferentialType referentialType;
+    @Column(nullable = false)
+    private ReferentialType type;
 
-    private String referentialValue;
+    @Column(nullable = false)
+    private String value;
 }

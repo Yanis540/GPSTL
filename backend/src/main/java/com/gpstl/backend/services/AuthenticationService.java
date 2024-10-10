@@ -35,11 +35,14 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         Optional<User> userExist = userRepository.findByEmail(request.getEmail());
+
         if (userExist.isPresent()) {
             return null;
         }
 
-        if(request.getRegisterType().equals("recruiter")) {
+        User user = null;
+
+        if(request.getRole().equals(Role.RECRUITER)) {
             Recruiter recruiter = new Recruiter();
             recruiter.setFirstname(request.getFirstname());
             recruiter.setLastname(request.getLastname());
@@ -47,9 +50,11 @@ public class AuthenticationService {
             recruiter.setPhoto(request.getPhoto());
             recruiter.setPassword(passwordEncoder.encode(request.getPassword()));
             recruiter.setCompany(request.getCompany());
+            recruiter.setRole(Role.RECRUITER);
+            user = userRepository.save(recruiter);
         }
 
-        if(request.getRegisterType().equals("student")) {
+        if(request.getRole().equals(Role.STUDENT)) {
             Student student = new Student();
             student.setFirstname(request.getFirstname());
             student.setLastname(request.getLastname());
@@ -58,17 +63,14 @@ public class AuthenticationService {
             student.setSkills(request.getSkills());
             student.setGrades(request.getGrades());
             student.setField(request.getField());
+            student.setRole(Role.STUDENT);
+            user = userRepository.save(student);
         }
 
-        var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .build();
+        if(user == null){
+            return null;
+        }
 
-        user = userRepository.save(user);
         revokeAllUserTokens(user);
         String accessToken = jwtService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(user.getId());

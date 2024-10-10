@@ -22,14 +22,19 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private Double salary;
 
+    @Column(nullable = false)
     private String rhythm;
 
+    @Column(nullable = false)
     private String description;
 
+    @Column(name = "publication_date", nullable = false)
     private Date publicationDate;
 
     @ManyToOne
