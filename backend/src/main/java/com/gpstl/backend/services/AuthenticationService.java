@@ -1,5 +1,8 @@
 package com.gpstl.backend.services;
 
+import com.gpstl.backend.models.user.Recruiter;
+import com.gpstl.backend.models.user.Role;
+import com.gpstl.backend.models.user.Student;
 import com.gpstl.backend.payloads.request.AuthenticationRequest;
 import com.gpstl.backend.payloads.response.AuthenticationResponse;
 import com.gpstl.backend.payloads.request.RegisterRequest;
@@ -12,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,7 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
@@ -32,19 +34,46 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         Optional<User> userExist = userRepository.findByEmail(request.getEmail());
+
         if (userExist.isPresent()) {
             return null;
         }
-        var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
-                .build();
 
-        user = userRepository.save(user);
-        revokeAllUserTokens(user);
+        User user = null;
+
+        if(request.getRole().equals(Role.RECRUITER)) {
+            Recruiter recruiter = new Recruiter();
+            recruiter.setFirstname(request.getFirstname());
+            recruiter.setLastname(request.getLastname());
+            recruiter.setEmail(request.getEmail());
+            recruiter.setPhoto(request.getPhoto());
+            recruiter.setPassword(request.getPassword()); // Pas besoin d'encoder ici, le service s'en occupe
+            recruiter.setBirthdate(request.getBirthDate());
+            recruiter.setCompany(request.getCompany());
+            recruiter.setRole(Role.RECRUITER);
+            user = userService.saveUser(recruiter);
+        }
+
+        if(request.getRole().equals(Role.STUDENT)) {
+            Student student = new Student();
+            student.setFirstname(request.getFirstname());
+            student.setLastname(request.getLastname());
+            student.setEmail(request.getEmail());
+            student.setPassword(request.getPassword());
+            student.setPhoto(request.getPhoto());
+            student.setBirthdate(request.getBirthDate());
+            student.setField(request.getField());
+            student.setGrades(request.getGrades());
+            student.setSkills(request.getSkills());
+            student.setRole(Role.STUDENT);
+            user = userService.saveUser(student);
+        }
+
+        if(user == null){
+            return null;
+        }
+
+        //revokeAllUserTokens(user);
         String accessToken = jwtService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(user.getId());
 

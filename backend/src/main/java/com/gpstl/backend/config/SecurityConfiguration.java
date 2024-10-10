@@ -41,7 +41,7 @@ public class SecurityConfiguration {
                         .authenticationEntryPoint(unauthorizedEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("auth/**")
+                        .requestMatchers("auth/**","/swagger-ui/**", "/v2/api-docs/**", "/v3/api-docs/**")
                         .permitAll()
                         //.requestMatchers(POST, "articles/**").hasAnyRole(USER.name(), ADMIN.name())
                         //.requestMatchers(PUT, "articles/**").hasRole(ADMIN.name())

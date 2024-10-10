@@ -1,6 +1,5 @@
 package com.gpstl.backend.models.user;
 
-import com.gpstl.backend.models.candidacy.Candidacy;
 import com.gpstl.backend.models.token.RefreshToken;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -26,19 +26,26 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "first_name")
     private String firstname;
 
+    @Column(name = "last_name")
     private String lastname;
 
     @Column(unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
+
+    @Column(name = "birth_date", nullable = false)
+    private Date birthdate;
 
     @Lob
     private byte[] photo;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user")
