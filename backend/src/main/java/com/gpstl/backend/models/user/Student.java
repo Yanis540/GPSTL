@@ -1,6 +1,6 @@
 package com.gpstl.backend.models.user;
 
-import com.gpstl.backend.models.Referential;
+import com.gpstl.backend.models.referential.Referential;
 import com.gpstl.backend.models.candidacy.Candidacy;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 public class Student extends User {
 
-    @Column(name = "school_name", nullable = false)
+    @Column(name = "school_name")
     private String schoolName;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,7 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
@@ -48,10 +47,11 @@ public class AuthenticationService {
             recruiter.setLastname(request.getLastname());
             recruiter.setEmail(request.getEmail());
             recruiter.setPhoto(request.getPhoto());
-            recruiter.setPassword(passwordEncoder.encode(request.getPassword()));
+            recruiter.setPassword(request.getPassword()); // Pas besoin d'encoder ici, le service s'en occupe
+            recruiter.setBirthdate(request.getBirthDate());
             recruiter.setCompany(request.getCompany());
             recruiter.setRole(Role.RECRUITER);
-            user = userRepository.save(recruiter);
+            user = userService.saveUser(recruiter);
         }
 
         if(request.getRole().equals(Role.STUDENT)) {
@@ -59,19 +59,21 @@ public class AuthenticationService {
             student.setFirstname(request.getFirstname());
             student.setLastname(request.getLastname());
             student.setEmail(request.getEmail());
-            student.setPassword(passwordEncoder.encode(request.getPassword()));
-            student.setSkills(request.getSkills());
-            student.setGrades(request.getGrades());
+            student.setPassword(request.getPassword());
+            student.setPhoto(request.getPhoto());
+            student.setBirthdate(request.getBirthDate());
             student.setField(request.getField());
+            student.setGrades(request.getGrades());
+            student.setSkills(request.getSkills());
             student.setRole(Role.STUDENT);
-            user = userRepository.save(student);
+            user = userService.saveUser(student);
         }
 
         if(user == null){
             return null;
         }
 
-        revokeAllUserTokens(user);
+        //revokeAllUserTokens(user);
         String accessToken = jwtService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(user.getId());
 

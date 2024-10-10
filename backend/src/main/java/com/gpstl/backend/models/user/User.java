@@ -1,6 +1,5 @@
 package com.gpstl.backend.models.user;
 
-import com.gpstl.backend.models.candidacy.Candidacy;
 import com.gpstl.backend.models.token.RefreshToken;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,14 +32,14 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastname;
 
-    @Column(name = "birth_date")
-    private Date birthdate;
-
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
+
+    @Column(name = "birth_date", nullable = false)
+    private Date birthdate;
 
     @Lob
     private byte[] photo;

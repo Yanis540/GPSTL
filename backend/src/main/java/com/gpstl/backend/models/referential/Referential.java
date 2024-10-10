@@ -1,4 +1,4 @@
-package com.gpstl.backend.models;
+package com.gpstl.backend.models.referential;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,6 +7,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 public class Referential {
     @Id

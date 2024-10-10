@@ -16,23 +16,23 @@ create table if not exists referential
     primary key (id),
     constraint referential_type_check
         check ((type)::text = ANY
-               (ARRAY [('GRADE'::character varying)::text, ('SKILL'::character varying)::text, ('FIELD'::character varying)::text]))
+               ((ARRAY ['GRADE'::character varying, 'SKILL'::character varying, 'FIELD'::character varying])::text[]))
 );
 
 create table if not exists _user
 (
     monthly_current_candidacy integer,
-    birth_date                timestamp(6),
+    birth_date                timestamp(6) not null,
     company_id                bigint,
     field_id                  bigint,
     id                        bigint       not null,
     user_type                 varchar(31)  not null,
-    email                     varchar(255) not null,
+    email                     varchar(255),
     first_name                varchar(255),
     last_name                 varchar(255),
     password                  varchar(255) not null,
     role                      varchar(255) not null,
-    school_name               varchar(255) not null,
+    school_name               varchar(255),
     photo                     oid,
     primary key (id),
     unique (email),
@@ -42,16 +42,16 @@ create table if not exists _user
         foreign key (field_id) references referential,
     constraint _user_role_check
         check ((role)::text = ANY
-               (ARRAY [('ADMIN'::character varying)::text, ('STUDENT'::character varying)::text, ('RECRUITER'::character varying)::text]))
+               ((ARRAY ['ADMIN'::character varying, 'STUDENT'::character varying, 'RECRUITER'::character varying])::text[]))
 );
 
 create table if not exists ass_user_grade
 (
     grade_id bigint not null,
     user_id  bigint not null,
-    constraint fk75q731l5ammui6eqk86j6a5jk
+    constraint fkgiys3isk5t1yxfodlwlqwqo0l
         foreign key (grade_id) references referential,
-    constraint fkptnr61vcsvkshd6ttwfwg14et
+    constraint fk5i1h52umdm1l4ncsg269ckc83
         foreign key (user_id) references _user
 );
 
@@ -59,9 +59,9 @@ create table if not exists ass_user_skill
 (
     skill_id bigint not null,
     user_id  bigint not null,
-    constraint fksvd1vax0xa01q03my63364wmo
+    constraint fk5od0g6d681bo9t0spftuiufs6
         foreign key (skill_id) references referential,
-    constraint fka81u8he4ips24twiy82flc5ou
+    constraint fkiwg79skekvofq8q2ce4ppp3y6
         foreign key (user_id) references _user
 );
 
@@ -94,7 +94,7 @@ create table if not exists candidacy
         foreign key (student_id) references _user,
     constraint candidacy_status_check
         check ((status)::text = ANY
-               (ARRAY [('NONE'::character varying)::text, ('PENDING'::character varying)::text, ('ACCEPTED'::character varying)::text, ('REFUSED'::character varying)::text]))
+               ((ARRAY ['NONE'::character varying, 'PENDING'::character varying, 'ACCEPTED'::character varying, 'REFUSED'::character varying])::text[]))
 );
 
 create table if not exists refresh_token

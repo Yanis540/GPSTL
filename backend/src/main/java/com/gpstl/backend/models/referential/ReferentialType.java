@@ -1,4 +1,4 @@
-package com.gpstl.backend.models;
+package com.gpstl.backend.models.referential;
 
 public enum ReferentialType {
     GRADE,
