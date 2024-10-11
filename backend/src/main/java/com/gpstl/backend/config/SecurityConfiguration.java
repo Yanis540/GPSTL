@@ -19,6 +19,8 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
+import static com.gpstl.backend.models.user.Role.*;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -31,7 +33,6 @@ public class SecurityConfiguration {
     private final Http401UnauthorizedEntryPoint unauthorizedEntryPoint;
 
     private static final Long MAX_AGE = 3600L;
-    private static final int CORS_FILTER_ORDER = -102;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,10 +44,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("auth/**","/swagger-ui/**", "/v2/api-docs/**", "/v3/api-docs/**")
                         .permitAll()
-                        //.requestMatchers(POST, "articles/**").hasAnyRole(USER.name(), ADMIN.name())
-                        //.requestMatchers(PUT, "articles/**").hasRole(ADMIN.name())
-                        //.requestMatchers(DELETE, "articles/**").hasRole(ADMIN.name())
-                        //.requestMatchers(GET, "articles/**").hasAnyRole(USER.name(), ADMIN.name())
+                        .requestMatchers("user/**").hasAnyRole(STUDENT.name(), RECRUITER.name(), ADMIN.name())
+                        .requestMatchers("offer/**").hasAnyRole(STUDENT.name(), RECRUITER.name(), ADMIN.name())
+                        .requestMatchers("candidacy/**").hasAnyRole(STUDENT.name(), RECRUITER.name(), ADMIN.name())
+                        .requestMatchers("company/**").hasAnyRole(RECRUITER.name(), ADMIN.name())
+                        .requestMatchers("referential/**").hasRole(ADMIN.name())
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session ->

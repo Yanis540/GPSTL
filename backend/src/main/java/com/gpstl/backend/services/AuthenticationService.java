@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -73,21 +72,15 @@ public class AuthenticationService {
             return null;
         }
 
-        //revokeAllUserTokens(user);
         String accessToken = jwtService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(user.getId());
-
-        var roles = user.getRole().getAuthorities()
-                .stream()
-                .map(SimpleGrantedAuthority::getAuthority)
-                .toList();
 
         return AuthenticationResponse.builder()
                 .accessToken(accessToken)
                 .email(user.getEmail())
                 .id(user.getId())
                 .refreshToken(refreshToken.getToken())
-                .roles(roles)
+                .role(user.getRole().name())
                 .tokenType(TokenType.BEARER.name())
                 .build();
     }
@@ -104,17 +97,13 @@ public class AuthenticationService {
             return null;
         }
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        var roles = user.getRole().getAuthorities()
-                .stream()
-                .map(SimpleGrantedAuthority::getAuthority)
-                .toList();
 
         revokeAllUserTokens(user);
         String accessToken = jwtService.generateToken(user);
         var refreshToken = refreshTokenService.createRefreshToken(user.getId());
         return AuthenticationResponse.builder()
                 .accessToken(accessToken)
-                .roles(roles)
+                .role(user.getRole().name())
                 .email(user.getEmail())
                 .id(user.getId())
                 .refreshToken(refreshToken.getToken())

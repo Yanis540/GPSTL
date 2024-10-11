@@ -1,10 +1,13 @@
 package com.gpstl.backend.controllers;
 
-import com.gpstl.backend.mappers.user.UserMapper;
+import com.gpstl.backend.dtos.RecruiterDto;
+import com.gpstl.backend.mappers.RecruiterMapper;
+import com.gpstl.backend.mappers.StudentMapper;
+import com.gpstl.backend.models.user.Recruiter;
+import com.gpstl.backend.models.user.Student;
 import com.gpstl.backend.models.user.User;
 import com.gpstl.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +19,23 @@ public class UserController {
 
     private final UserService userService;
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    @PutMapping("/recruiter/{id}")
+    public ResponseEntity<RecruiterDto> updateRecruiter(@PathVariable Long id, @RequestBody Recruiter updatedUser) {
         try {
             User user = userService.updateUser(id, updatedUser);
-            return ResponseEntity.ok(UserMapper.toDTO(user));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.ok(RecruiterMapper.toDto((Recruiter) user));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/student/{id}")
+    public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody Student updatedUser) {
+        try {
+            User user = userService.updateUser(id, updatedUser);
+            return ResponseEntity.ok(StudentMapper.toDto((Student) user));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
         }
     }
 
