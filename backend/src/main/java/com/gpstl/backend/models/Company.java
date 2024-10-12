@@ -1,6 +1,6 @@
 package com.gpstl.backend.models;
 
-import com.gpstl.backend.models.candidacy.Candidacy;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gpstl.backend.models.user.Recruiter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,6 +27,7 @@ public class Company {
     private String siret;
 
     @OneToMany(mappedBy = "company")
+    @JsonIgnoreProperties("company")
     private List<Recruiter> recruiters;
 
 }

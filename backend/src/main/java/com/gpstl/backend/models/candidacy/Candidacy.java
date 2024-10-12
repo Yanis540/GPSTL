@@ -1,5 +1,6 @@
 package com.gpstl.backend.models.candidacy;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gpstl.backend.models.Offer;
 import com.gpstl.backend.models.user.Student;
 import jakarta.persistence.*;
@@ -30,10 +31,12 @@ public class Candidacy {
     @Column(name = "date_of_response")
     private Date dateOfResponse;
 
-    @ManyToOne
+    @JsonIgnoreProperties("candidacies")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
     private Student student;
 
+    @JsonIgnoreProperties("candidacies")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "offer_id")
     private Offer offer;

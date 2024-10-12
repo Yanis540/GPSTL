@@ -7,7 +7,6 @@ import com.gpstl.backend.repositories.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,10 +39,9 @@ public class CompanyController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
-    public ResponseEntity<CompanyDto> createCompany(@RequestBody Company companyToCreate) {
+    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyDto companyToCreate) {
         try {
-            Company company = companyRepository.save(companyToCreate);
+            Company company = companyRepository.save(CompanyMapper.toEntity(companyToCreate));
             return new ResponseEntity<>(CompanyMapper.toDto(company), HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -51,11 +49,10 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CompanyDto> updateCompany(@PathVariable("id") Long id, @RequestBody Company companyToUpdate) {
+    public ResponseEntity<CompanyDto> updateCompany(@PathVariable("id") Long id, @RequestBody CompanyDto companyToUpdate) {
         try {
             if (companyRepository.existsById(id)) {
-                Company updatedCompany = companyRepository.save(companyToUpdate);
+                Company updatedCompany = companyRepository.save(CompanyMapper.toEntity(companyToUpdate));
                 return ResponseEntity.ok(CompanyMapper.toDto(updatedCompany));
             } else {
                 return ResponseEntity.notFound().build();
@@ -66,7 +63,6 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
         try {
             if (companyRepository.existsById(id)) {

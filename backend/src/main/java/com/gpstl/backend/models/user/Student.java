@@ -21,13 +21,9 @@ public class Student extends User {
     @JoinColumn(name = "field_id")
     private Referential field;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(
-            name= "ass_user_grade",
-            joinColumns=@JoinColumn(name= "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "grade_id")
-    )
-    private List<Referential> grades;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "grade_id")
+    private Referential grade;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(

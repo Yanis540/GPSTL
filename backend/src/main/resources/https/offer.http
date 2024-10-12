@@ -1,0 +1,11 @@
+### Create a new offer (id = 1)
+POST http://localhost:8080/offer
+Content-Type: application/json
+
+{
+  "name": "DevOps",
+  "salary": 1730.00,
+  "rhythm": "Full-time",
+  "description": "Join our dynamic team of software engineers to build cutting-edge applications.",
+  "recruiterId": 1
+}

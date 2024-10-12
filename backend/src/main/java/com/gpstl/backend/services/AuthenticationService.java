@@ -6,6 +6,8 @@ import com.gpstl.backend.models.user.Student;
 import com.gpstl.backend.payloads.request.AuthenticationRequest;
 import com.gpstl.backend.payloads.response.AuthenticationResponse;
 import com.gpstl.backend.payloads.request.RegisterRequest;
+import com.gpstl.backend.repositories.CompanyRepository;
+import com.gpstl.backend.repositories.ReferentialRepository;
 import com.gpstl.backend.repositories.RefreshTokenRepository;
 import com.gpstl.backend.repositories.UserRepository;
 import com.gpstl.backend.models.token.TokenType;
@@ -25,6 +27,8 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
+    private final ReferentialRepository referentialRepository;
     private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -48,7 +52,7 @@ public class AuthenticationService {
             recruiter.setPhoto(request.getPhoto());
             recruiter.setPassword(request.getPassword()); // Pas besoin d'encoder ici, le service s'en occupe
             recruiter.setBirthdate(request.getBirthDate());
-            recruiter.setCompany(request.getCompany());
+            recruiter.setCompany(companyRepository.findById(request.getCompanyId()).orElseThrow());
             recruiter.setRole(Role.RECRUITER);
             user = userService.saveUser(recruiter);
         }
@@ -61,9 +65,13 @@ public class AuthenticationService {
             student.setPassword(request.getPassword());
             student.setPhoto(request.getPhoto());
             student.setBirthdate(request.getBirthDate());
-            student.setField(request.getField());
-            student.setGrades(request.getGrades());
-            student.setSkills(request.getSkills());
+            student.setField(referentialRepository.findById(request.getFieldId()).orElseThrow());
+            student.setGrade(referentialRepository.findById(request.getGradeId()).orElseThrow());
+            student.setSkills(request.getSkillIds()
+                    .stream()
+                    .map(referentialRepository::findById)
+                    .map(s -> s.orElseThrow(() -> new IllegalArgumentException("Skill not found")))
+                    .toList());
             student.setRole(Role.STUDENT);
             user = userService.saveUser(student);
         }

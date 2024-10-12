@@ -1,0 +1,31 @@
+### Register a new recruiter (id = 1)
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "role": "RECRUITER",
+  "firstname": "Jane",
+  "lastname": "Smith",
+  "email": "jane.sth@eple.com",
+  "password": "securepassword",
+  "companyId": 1,
+  "birthDate": "1985-08-15"
+}
+
+### Register a new student (id = 2)
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "role": "STUDENT",
+  "firstname": "darko",
+  "lastname": "dj",
+  "email": "d.d@gml.com",
+  "password": "securepassword",
+  "schoolName": "SU",
+  "skillIds" : [9, 10],
+  "gradeId" : 5,
+  "fieldId" : 36,
+  "birthDate": "1985-08-15"
+}
+

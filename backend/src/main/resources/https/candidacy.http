@@ -1,0 +1,9 @@
+### Create a new candidacy (id = 1)
+POST http://localhost:8080/candidacy
+Content-Type: application/json
+
+{
+  "studentId": 2,
+  "offerId": 1
+}
+

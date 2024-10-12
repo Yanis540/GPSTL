@@ -10,9 +10,9 @@ import java.util.List;
 @NoArgsConstructor
 public class StudentDto extends UserDto {
     private String schoolName;
-    private Long fieldId;
-    private List<Long> gradeIds;
-    private List<Long> skillIds;
+    private ReferentialDto field;
+    private ReferentialDto grade;
+    private List<ReferentialDto> skills;
     private Integer monthlyCurrentCandidacy;
 }
 

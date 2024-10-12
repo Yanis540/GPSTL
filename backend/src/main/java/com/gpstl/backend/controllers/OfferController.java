@@ -7,7 +7,6 @@ import com.gpstl.backend.services.OfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,10 +40,9 @@ public class OfferController {
 
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
-    public ResponseEntity<OfferDto> createOffer(@RequestBody Offer offerToCreate) {
+    public ResponseEntity<OfferDto> createOffer(@RequestBody OfferDto offerToCreate) {
         try {
-            Offer offer = offerService.createOffer(offerToCreate);
+            Offer offer = offerService.createOffer(OfferMapper.toEntity(offerToCreate));
             return new ResponseEntity<>(OfferMapper.toDto(offer), HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -52,10 +50,9 @@ public class OfferController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
-    public ResponseEntity<OfferDto> updateOffer(@PathVariable("id") Long id, @RequestBody Offer offerToUpdate) {
+    public ResponseEntity<OfferDto> updateOffer(@PathVariable("id") Long id, @RequestBody OfferDto offerToUpdate) {
         try {
-            Offer offer = offerService.updateOffer(id, offerToUpdate);
+            Offer offer = offerService.updateOffer(id, OfferMapper.toEntity(offerToUpdate));
             return ResponseEntity.ok(OfferMapper.toDto(offer));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -63,7 +60,6 @@ public class OfferController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
     public ResponseEntity<Void> deleteOffer(@PathVariable Long id) {
         try {
             offerService.deleteOffer(id);
