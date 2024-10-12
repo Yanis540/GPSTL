@@ -1,7 +1,5 @@
 package com.gpstl.backend.payloads.request;
 
-import com.gpstl.backend.models.Company;
-import com.gpstl.backend.models.referential.Referential;
 import com.gpstl.backend.models.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,10 +20,10 @@ public class RegisterRequest {
     private String email;
     private byte[] photo;
     private String schoolName;
-    private Company company;
-    private List<Referential> skills;
-    private List<Referential> grades;
-    private Referential field;
+    private Long companyId;
+    private List<Long> skillIds;
+    private Long gradeId;
+    private Long fieldId;
     private Date birthDate;
     private Role role;
 }

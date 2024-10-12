@@ -19,8 +19,6 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
-import static com.gpstl.backend.models.user.Role.*;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -44,11 +42,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("auth/**","/swagger-ui/**", "/v2/api-docs/**", "/v3/api-docs/**")
                         .permitAll()
-                        .requestMatchers("user/**").hasAnyRole(STUDENT.name(), RECRUITER.name(), ADMIN.name())
-                        .requestMatchers("offer/**").hasAnyRole(STUDENT.name(), RECRUITER.name(), ADMIN.name())
-                        .requestMatchers("candidacy/**").hasAnyRole(STUDENT.name(), RECRUITER.name(), ADMIN.name())
-                        .requestMatchers("company/**").hasAnyRole(RECRUITER.name(), ADMIN.name())
-                        .requestMatchers("referential/**").hasRole(ADMIN.name())
+                        .requestMatchers("user/**").permitAll()
+                        .requestMatchers("offer/**").permitAll()
+                        .requestMatchers("candidacy/**").permitAll()
+                        .requestMatchers("company/**").permitAll()
+                        .requestMatchers("referential/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session ->

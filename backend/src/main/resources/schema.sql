@@ -25,6 +25,7 @@ create table if not exists _user
     birth_date                timestamp(6) not null,
     company_id                bigint,
     field_id                  bigint,
+    grade_id                  bigint,
     id                        bigint       not null,
     user_type                 varchar(31)  not null,
     email                     varchar(255),
@@ -40,19 +41,11 @@ create table if not exists _user
         foreign key (company_id) references company,
     constraint fk7rpbyfbp5vxcoxa78s6957s14
         foreign key (field_id) references referential,
+    constraint fkhdpyb4v3bd3fkx24bdk6o0mu
+        foreign key (grade_id) references referential,
     constraint _user_role_check
         check ((role)::text = ANY
                ((ARRAY ['ADMIN'::character varying, 'STUDENT'::character varying, 'RECRUITER'::character varying])::text[]))
-);
-
-create table if not exists ass_user_grade
-(
-    grade_id bigint not null,
-    user_id  bigint not null,
-    constraint fkgiys3isk5t1yxfodlwlqwqo0l
-        foreign key (grade_id) references referential,
-    constraint fk5i1h52umdm1l4ncsg269ckc83
-        foreign key (user_id) references _user
 );
 
 create table if not exists ass_user_skill

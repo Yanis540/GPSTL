@@ -47,9 +47,8 @@ public class CandidacyService {
         candidacyToCreate.setOffer(offerRepository.findById(candidacy.getOffer().getId()).orElseThrow());
         candidacyToCreate.setDateOfCandidacy(new Date());
         candidacyToCreate.setStatus(CandidacyStatus.PENDING);
-        candidacyRepository.save(candidacy);
 
-        return candidacy;
+        return candidacyRepository.save(candidacyToCreate);
     }
 
     public Candidacy updateCandidacy(Long id, Candidacy candidacy) {

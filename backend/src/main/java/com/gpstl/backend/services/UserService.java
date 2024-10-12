@@ -23,19 +23,6 @@ public class UserService {
 
     public User saveUser(User user) {
         if (user instanceof Student student) {
-
-            List<Referential> grades = student.getGrades().stream()
-                    .map(ref -> referentialRepository.findById(ref.getId()).orElseThrow())
-                    .collect(Collectors.toList());
-            student.setGrades(grades);
-
-            List<Referential> skills = student.getSkills().stream()
-                    .map(ref -> referentialRepository.findById(ref.getId()).orElseThrow())
-                    .collect(Collectors.toList());
-            student.setSkills(skills);
-
-            student.setField(referentialRepository.findById(student.getField().getId()).orElseThrow());
-
             student.setPassword(passwordEncoder.encode(student.getPassword()));
             return userRepository.save(student);
         } else if (user instanceof Recruiter recruiter) {
@@ -57,10 +44,7 @@ public class UserService {
         if (updatedUser instanceof Student updatedStudent) {
             Student existingStudent = (Student) existingUser;
 
-            List<Referential> grades = updatedStudent.getGrades().stream()
-                    .map(ref -> referentialRepository.findById(ref.getId()).orElseThrow())
-                    .collect(Collectors.toList());
-            existingStudent.setGrades(grades);
+            existingStudent.setGrade(referentialRepository.findById(updatedStudent.getGrade().getId()).orElseThrow());
 
             List<Referential> skills = updatedStudent.getSkills().stream()
                     .map(ref -> referentialRepository.findById(ref.getId()).orElseThrow())
@@ -75,7 +59,7 @@ public class UserService {
             existingRecruiter.setCompany(updatedRecruiter.getCompany());
         }
 
-        existingUser.setRole(updatedUser.getRole());
+        //existingUser.setRole(updatedUser.getRole());
 
         return userRepository.save(existingUser);
     }

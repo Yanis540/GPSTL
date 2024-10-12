@@ -7,7 +7,6 @@ import com.gpstl.backend.services.CandidacyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,10 +49,9 @@ public class CandidacyController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('STUDENT', 'ADMIN')") // seul le candidat peut créer la candidature
-    public ResponseEntity<CandidacyDto> createCandidacy(@RequestBody Candidacy candidacyToCreate) {
+    public ResponseEntity<CandidacyDto> createCandidacy(@RequestBody CandidacyDto candidacyToCreate) {
         try {
-            Candidacy candidacy = candidacyService.createCandidacy(candidacyToCreate);
+            Candidacy candidacy = candidacyService.createCandidacy(CandidacyMapper.toEntity(candidacyToCreate));
             return new ResponseEntity<>(CandidacyMapper.toDto(candidacy), HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -61,10 +59,9 @@ public class CandidacyController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")  // Accepter ou refuser la candidature
-    public ResponseEntity<CandidacyDto> updateCandidacy(@PathVariable("id") Long id, @RequestBody Candidacy candidacyToUpdate) {
+    public ResponseEntity<CandidacyDto> updateCandidacy(@PathVariable("id") Long id, @RequestBody CandidacyDto candidacyToUpdate) {
         try {
-            Candidacy candidacy = candidacyService.updateCandidacy(id, candidacyToUpdate);
+            Candidacy candidacy = candidacyService.updateCandidacy(id, CandidacyMapper.toEntity(candidacyToUpdate));
             if (candidacy == null) {
                 return ResponseEntity.notFound().build();
             }
@@ -75,7 +72,6 @@ public class CandidacyController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('STUDENT', 'ADMIN')")
     public ResponseEntity<Void> deleteCandidacy(@PathVariable Long id) {
         try {
             Candidacy candidacy = candidacyService.deleteCandidacy(id);
