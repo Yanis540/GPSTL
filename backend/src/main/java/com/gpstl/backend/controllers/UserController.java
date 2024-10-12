@@ -40,4 +40,20 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        try {
+            User user = userService.getUser(id);
+            if (user instanceof Student student) {
+                return ResponseEntity.ok(StudentMapper.toDto(student));
+            } else if (user instanceof Recruiter recruiter) {
+                return ResponseEntity.ok(RecruiterMapper.toDto(recruiter));
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
