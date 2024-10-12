@@ -15,22 +15,35 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
 
     public List<Company> getAllCompany() {
-        return List.of();
+        return companyRepository.findAll();
     }
 
     public Optional<Company> getCompanyById(Long id) {
-        return Optional.empty();
+        return companyRepository.findById(id);
     }
 
     public Company createCompany(Company companyToCreate) {
-        return companyToCreate;
+        Company existingCompany = companyRepository.findByName(companyToCreate.getName());
+        if (existingCompany != null) {
+            throw new IllegalArgumentException("Company already exists");
+        }
+        Company company = new Company();
+        company.setName(companyToCreate.getName());
+        company.setSiret(companyToCreate.getSiret());
+        company.setRecruiters(companyToCreate.getRecruiters());
+        return companyRepository.save(company);
     }
 
+    // Je pense qu'une company peut simplement update les Recruiters qui lui sont associés
     public Company updateCompany(Long id, Company companyToUpdate) {
-        return companyToUpdate;
+        Company existingCompany = companyRepository.findById(id).orElseThrow();
+        existingCompany.setName(companyToUpdate.getName());
+        existingCompany.setSiret(companyToUpdate.getSiret());
+        existingCompany.setRecruiters(companyToUpdate.getRecruiters());
+        return companyRepository.save(existingCompany);
     }
 
-    public Company deleteCompany(Long id) {
-        return null;
+    public void deleteCompany(Long id) {
+        companyRepository.deleteById(id);
     }
 }
