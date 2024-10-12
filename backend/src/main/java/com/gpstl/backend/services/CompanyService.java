@@ -30,7 +30,6 @@ public class CompanyService {
         Company company = new Company();
         company.setName(companyToCreate.getName());
         company.setSiret(companyToCreate.getSiret());
-        company.setRecruiters(companyToCreate.getRecruiters());
         return companyRepository.save(company);
     }
 
@@ -39,7 +38,6 @@ public class CompanyService {
         Company existingCompany = companyRepository.findById(id).orElseThrow();
         existingCompany.setName(companyToUpdate.getName());
         existingCompany.setSiret(companyToUpdate.getSiret());
-        existingCompany.setRecruiters(companyToUpdate.getRecruiters());
         return companyRepository.save(existingCompany);
     }
 
