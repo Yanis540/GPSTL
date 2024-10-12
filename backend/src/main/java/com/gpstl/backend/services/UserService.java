@@ -34,9 +34,7 @@ public class UserService {
                     .collect(Collectors.toList());
             student.setSkills(skills);
 
-            if (student.getField() != null) {
-                student.setField(referentialRepository.findById(student.getField().getId()).orElseThrow());
-            }
+            student.setField(referentialRepository.findById(student.getField().getId()).orElseThrow());
 
             student.setPassword(passwordEncoder.encode(student.getPassword()));
             return userRepository.save(student);
@@ -69,9 +67,7 @@ public class UserService {
                     .collect(Collectors.toList());
             existingStudent.setSkills(skills);
 
-            if (updatedStudent.getField() != null) {
-                existingStudent.setField(referentialRepository.findById(updatedStudent.getField().getId()).orElseThrow());
-            }
+            existingStudent.setField(referentialRepository.findById(updatedStudent.getField().getId()).orElseThrow());
 
             existingStudent.setSchoolName(updatedStudent.getSchoolName());
         } else if (updatedUser instanceof Recruiter updatedRecruiter) {

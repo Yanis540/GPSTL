@@ -2,7 +2,6 @@ package com.gpstl.backend.models;
 
 import com.gpstl.backend.models.candidacy.Candidacy;
 import com.gpstl.backend.models.user.Recruiter;
-import com.gpstl.backend.models.user.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
