@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Context from "@/context/Context";
-import { ThemeToggle } from "@/components/theme-provider";
-
+import { Toaster } from "@/components/ui/sonner"
+import Navbar from "@/components/Navbar";
 const geistSans = localFont({
   src: "../assets/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -32,9 +32,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen `}
       >
         <Context>
-        {children}
-        <ThemeToggle /> 
+          <main className="flex flex-col min-h-screen ">
+            <Navbar /> 
+            {children}
+          </main>
         </Context>
+        <Toaster />
       </body>
     </html>
   );
