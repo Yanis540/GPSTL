@@ -1,19 +1,9 @@
 
 
-export enum UserRole {
-    ADMIN= "ADMIN",
-    STUDENT= "STUDENT",
-    RECRUITER= "RECRUITER",
-}
-export enum CandidacyStatus {
-    NONE= "NONE",
-    PENDING= "PENDING",
-    ACCEPTED= "ACCEPTED",
-    REFUSED= "REFUSED",
-}
+
 declare global {
     // put global files
-
+    
     type User = {
         id : number 
         monthlyCurrentCandidacy?: number; // integer, optional
@@ -27,17 +17,21 @@ declare global {
         photo?: number; // oid (PostgreSQL object identifier)
         tokens  ?: AuthCredentials
     }
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    interface Admin extends User  {
-    }
+    
     interface Student extends User  {
         schoolName : string; // varchar(255), optional
         gradeId: number; // bigint, optional
         fieldId: number; // bigint, optional
     }
     interface Recruiter extends User  {
-        companyId: number; // bigint, optional
+        company: Company; // bigint, optional
 
+    }
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    interface Admin extends User  {
+    }
+    type Company ={
+        id : number
     }
     type AuthCredentials = {
         access: {
