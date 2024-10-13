@@ -24,10 +24,10 @@ export default function Home() {
     }, 
   ]
   return (
-    <div className="flex-1 flex flex-col items-center">
-      <MaxWidthWrapper className="flex-1  flex flex-col items-center ">
+    <div className="flex-1 flex flex-col h-full items-center">
+      <MaxWidthWrapper className="h-[calc(100vh-4rem)]  flex flex-col items-center ">
         {/* Hero Section */}
-        <section className="w-full py-20 flex flex-col items-center gap-y-4 md:gap-y-6">
+        <section className="flex-1 w-full py-20 flex flex-col items-center justify-center gap-y-4 md:gap-y-6 ">
           <h1 className="text-4xl md:text-6xl font-bold text-center text-foreground ">
             Find Your Ideal <span className="text-primary">Internship / Apprenticeship</span> Today
           </h1>
