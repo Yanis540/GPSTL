@@ -31,7 +31,7 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-bold text-center text-foreground ">
             Find Your Ideal <span className="text-primary">Internship / Apprenticeship</span> Today
           </h1>
-          <p className="text-gray-700 text-center  ">
+          <p className="text-gray-700 dark:text-gray-400 text-center  ">
             Explore curated opportunities and insights from the finance industry.
           </p>
           <Button className="px-6 py-3 ">

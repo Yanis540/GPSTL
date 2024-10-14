@@ -4,6 +4,7 @@ import "./globals.css";
 import Context from "@/context/Context";
 import { Toaster } from "@/components/ui/sonner"
 import Navbar from "@/components/Navbar";
+import AuthContext from "@/context/AuthContext";
 const geistSans = localFont({
   src: "../assets/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -32,10 +33,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen `}
       >
         <Context>
-          <main className="flex flex-col min-h-screen ">
-            <Navbar /> 
-            {children}
-          </main>
+          <AuthContext>
+            <main className="flex flex-col min-h-screen ">
+              <Navbar /> 
+              {children}
+            </main>
+          </AuthContext>
         </Context>
         <Toaster />
       </body>

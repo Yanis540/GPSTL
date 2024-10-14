@@ -14,6 +14,7 @@ import {
   } from "@/components/ui/card"
 import { useSignIn } from '../hooks/use-sign-in';
 import { Icons } from '@/components/icons';
+import { useAuth } from '@/context/store/use-auth';
   
   
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -23,6 +24,8 @@ interface PageProps {
 
 function Page({}:PageProps) {
     const {signIn,register,errors} = useSignIn(); 
+    const {user} = useAuth(); 
+    console.log("i'm HEREEE",user)
     return (
     <div className="flex-1 flex  flex-col items-center justify-center">
         <form onSubmit={signIn.credentials}>
