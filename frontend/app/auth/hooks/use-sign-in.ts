@@ -63,9 +63,9 @@ export const useSignIn = ()=>{
     }); 
     const onSubmit = async(data:SignInSchema)=>{
         try{
-            // await login(data);
+            await login(data);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            set_user(({...data,name:"Yanis",id:1233}) as any ); 
+            // set_user(({...data,name:"Yanis",id:1233}) as any ); 
         }
         catch(err){
 
