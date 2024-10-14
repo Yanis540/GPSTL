@@ -11,6 +11,7 @@ import { UseMutateAsyncFunction, useMutation } from "react-query";
 import axios, { AxiosError } from "axios"; 
 import { useAuth } from "@/context/store/use-auth";
 import { SERVER_URL } from "@/env";
+import { useEffect } from "react";
 
 export const signInSchema = z.object({
     email : z.string().email(), 
@@ -38,7 +39,7 @@ export const useSignIn = ()=>{
     } = useForm<SignInSchema>({
         resolver : zodResolver(signInSchema)
     }); 
-    const {set_user} = useAuth(); 
+    const {set_user,user} = useAuth();
     const router = useRouter(); 
     const {data,isLoading,error,mutateAsync:login}:useLoginMutation = useMutation({
         mutationKey:["login"],
@@ -60,10 +61,11 @@ export const useSignIn = ()=>{
                 toast(`Unknown error occured`,{className:"text-red-500 bg-red-300"})
         }
     }); 
-
     const onSubmit = async(data:SignInSchema)=>{
         try{
             await login(data);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // set_user(({...data,name:"Yanis",id:1233}) as any ); 
         }
         catch(err){
 
