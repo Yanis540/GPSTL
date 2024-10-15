@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import {
     Cloud,
@@ -34,29 +35,39 @@ import {
     Avatar,
     AvatarFallback,
     AvatarImage,
-  } from "@/components/ui/avatar"
+} from "@/components/ui/avatar"
+import { useAuth } from '@/context/store/use-auth';
+import { ThemeToggle } from './theme-provider';
+
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface AccountProps {
 
 };
 
 function Account({ }: AccountProps) {
+    const {user,set_user} = useAuth();
+    const handleLogout = ()=>set_user(undefined); 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer">
-                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <AvatarImage src={!!user?.photo? (user?.photo):"https://github.com/shadcn.png"} alt="@shadcn" />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel className='capitalize'>HI, {user?.firstName}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
                         <User className="mr-2 h-4 w-4" />
                         <span>Profile</span>
                         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <ThemeToggle className="mr-2 h-4 w-4" />
+                        <span >Dark Mode </span>
+                        <DropdownMenuShortcut>⇧⌘D</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <CreditCard className="mr-2 h-4 w-4" />
@@ -123,7 +134,7 @@ function Account({ }: AccountProps) {
                     <span>API</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

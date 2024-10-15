@@ -14,7 +14,7 @@ declare global {
         lastName?: string; // varchar(255), optional
         password: string; // varchar(255)
         role: UserRole; // varchar(255) with enum values
-        photo?: number; // oid (PostgreSQL object identifier)
+        photo?: string; // oid (PostgreSQL object identifier)
         tokens  ?: AuthCredentials
     }
     
@@ -35,7 +35,7 @@ declare global {
     }
     type AuthCredentials = {
         access: {
-            exp : number 
+            exp ?: number 
             token : string 
         }
         refresh : {
