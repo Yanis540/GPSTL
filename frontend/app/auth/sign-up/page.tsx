@@ -30,7 +30,7 @@ interface PageProps {
 };
 
 function Page({ }: PageProps) {
-    const { signUp ,register,errors,control} = useSignUp();
+    const { isLoading,signUp ,register,errors,control} = useSignUp();
     return (
         <div className="flex-1 flex  flex-col items-center justify-center">
             <form onSubmit={signUp.credentials}>
@@ -87,8 +87,8 @@ function Page({ }: PageProps) {
                            
                         </div>
                         <div className="grid gap-4 mt-4">
-                            <Button type="submit" className="w-full">
-                                Create an account
+                            <Button type="submit" className="w-full" disabled={isLoading}>
+                                {isLoading?<Icons.spinner className="h-6 w-6 text-background" /> :"Create an account"}
                             </Button>
                            
                         </div>
@@ -107,6 +107,7 @@ function Page({ }: PageProps) {
 
 
 import { Control, Controller } from 'react-hook-form'
+import { Icons } from '@/components/icons';
 function DateSelector ({control}:{control:Control<SignUpSchema>}){
     return (
         <Controller
