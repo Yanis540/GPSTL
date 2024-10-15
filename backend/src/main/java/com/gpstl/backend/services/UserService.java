@@ -24,9 +24,12 @@ public class UserService {
     public User saveUser(User user) {
         if (user instanceof Student student) {
             student.setPassword(passwordEncoder.encode(student.getPassword()));
+            student.setSchoolName(student.getSchoolName());
+            student.setDescription("Ajoutez une description pour attirer des recruteurs");
             return userRepository.save(student);
         } else if (user instanceof Recruiter recruiter) {
             recruiter.setPassword(passwordEncoder.encode(recruiter.getPassword()));
+            recruiter.setDescription("Ajoutez une description pour attirer des alternants");
             return userRepository.save(recruiter);
         } else {
             throw new IllegalArgumentException("Unknown user type");
@@ -39,7 +42,7 @@ public class UserService {
 
         existingUser.setFirstname(updatedUser.getFirstname());
         existingUser.setLastname(updatedUser.getLastname());
-        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setDescription(updatedUser.getDescription());
 
         if (updatedUser instanceof Student updatedStudent) {
             Student existingStudent = (Student) existingUser;

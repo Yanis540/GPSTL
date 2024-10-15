@@ -23,7 +23,8 @@ public class CompanyService {
     }
 
     public Company createCompany(Company companyToCreate) {
-        Company existingCompany = companyRepository.findByName(companyToCreate.getName());
+        Company existingCompany = companyRepository.findBySiret(companyToCreate.getSiret());
+        //Company existingCompany = companyRepository.findByName(companyToCreate.getName());
         if (existingCompany != null) {
             throw new IllegalArgumentException("Company already exists");
         }

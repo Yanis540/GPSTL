@@ -64,6 +64,8 @@ public class AuthenticationService {
             student.setEmail(request.getEmail());
             student.setPassword(request.getPassword());
             student.setPhoto(request.getPhoto());
+            student.setSchoolName(request.getSchoolName());
+            student.setMonthlyCurrentCandidacy(0);
             student.setBirthdate(request.getBirthDate());
             student.setField(referentialRepository.findById(request.getFieldId()).orElseThrow());
             student.setGrade(referentialRepository.findById(request.getGradeId()).orElseThrow());

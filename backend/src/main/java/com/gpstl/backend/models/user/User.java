@@ -1,5 +1,6 @@
 package com.gpstl.backend.models.user;
 
+import com.gpstl.backend.models.Offer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -46,6 +48,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
+    private String description;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
@@ -80,4 +84,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+    
 }
