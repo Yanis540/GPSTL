@@ -29,3 +29,38 @@ Content-Type: application/json
   "birthDate": "1985-08-15"
 }
 
+### Register a new student (id = 2)
+POST http://localhost:8080/auth/authenticate
+Content-Type: application/json
+
+{
+  "email": "d.d@gml.com",
+  "password": "securepassword"
+}
+
+
+### Register a new student (id = 2)
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "role": "STUDENT",
+  "firstname": "Yanis",
+  "lastname": "tabellout",
+  "email": "yanis@gmail.com",
+  "password": "yanis",
+  "schoolName": "SU",
+  "skillIds" : [9, 10],
+  "gradeId" : 5,
+  "fieldId" : 36,
+  "birthDate": "1985-08-15"
+}
+
+### Register a new student (id = 2)
+POST http://localhost:8080/auth/authenticate
+Content-Type: application/json
+
+{
+  "email": "yanis@gmail.com",
+  "password": "yanis"
+}

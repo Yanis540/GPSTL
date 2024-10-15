@@ -34,7 +34,7 @@ create table if not exists _user
     password                  varchar(255) not null,
     role                      varchar(255) not null,
     school_name               varchar(255),
-    photo                     oid,
+    photo                     varchar(255),
     primary key (id),
     unique (email),
     constraint fk1xakqmeoi9pwmbl279fajjks7
