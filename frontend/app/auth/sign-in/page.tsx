@@ -23,8 +23,9 @@ interface PageProps {
 };
 
 function Page({}:PageProps) {
-    const {signIn,register,errors} = useSignIn(); 
+    const {isLoading,signIn,register,errors} = useSignIn(); 
     const {user} = useAuth(); 
+    console.log(isLoading)
     console.log("i'm HEREEE",user)
     return (
     <div className="flex-1 flex  flex-col items-center justify-center">
@@ -58,8 +59,8 @@ function Page({}:PageProps) {
                         </div>
                         <Input {...register("password")} name="password" type="password" placeholder='******'required />
                     </div>
-                    <Button type="submit" className="w-full">
-                    Login
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading?<Icons.spinner className="text-background h-6 w-6"/>:"Login"}
                     </Button>
                     <div className="relative">
                         <div className="absolute inset-0 flex items-center">

@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import {
     Cloud,
@@ -35,17 +36,20 @@ import {
     AvatarFallback,
     AvatarImage,
   } from "@/components/ui/avatar"
+import { useAuth } from '@/context/store/use-auth';
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface AccountProps {
 
 };
 
 function Account({ }: AccountProps) {
+    const {user,set_user} = useAuth();
+    const handleLogout = ()=>set_user(undefined); 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer">
-                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <AvatarImage src={!!user?.photo? (user?.photo):"https://github.com/shadcn.png"} alt="@shadcn" />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
@@ -123,7 +127,7 @@ function Account({ }: AccountProps) {
                     <span>API</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

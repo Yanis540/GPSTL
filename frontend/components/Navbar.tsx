@@ -15,7 +15,6 @@ interface NavbarProps {
 
 function Navbar({}:NavbarProps) {
     const {user} = useAuth(); 
-    console.log(user);
     return (
     <div className=" sticky z-50 top-0  inset-x-0 h-16 bg-background ">
         <header className={cn('relative flex flex-row items-center h-full px-2 sm:px-16 md:px-8  transition-all duration-500 border-b-[1px] dark:border-primary py-2 mx-auto max-w-[1500px]',)}>
