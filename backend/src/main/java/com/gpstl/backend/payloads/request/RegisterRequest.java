@@ -18,7 +18,7 @@ public class RegisterRequest {
     private String firstname;
     private String password;
     private String email;
-    private byte[] photo;
+    private String photo;
     private String schoolName;
     private Long companyId;
     private List<Long> skillIds;
