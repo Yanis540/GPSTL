@@ -1,12 +1,12 @@
 // use-profile.ts
 
 import { useState, useEffect } from 'react';
-import { getUser, updateUser } from './profile-service';
+import { getUser, updateUser } from './profil-service';
 import { User } from './user-types'; // Assurez-vous d'importer l'interface User depuis un fichier approprié
 
 const userId = 1; // Id de l'utilisateur (remplacez-le par le bon id selon votre logique)
 
-export const useProfile = () => {
+export const useProfil = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
