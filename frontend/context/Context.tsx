@@ -5,6 +5,9 @@ import {
     QueryClient,
     QueryClientProvider,
   } from 'react-query'
+  import {
+    TooltipProvider,
+  } from "@/components/ui/tooltip"
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface ContextProps {
     children: ReactNode | ReactNode[] | undefined
@@ -21,7 +24,9 @@ function Context({children}:ContextProps) {
             enableSystem
             disableTransitionOnChange
         >
-            {children}
+            <TooltipProvider>
+                {children}
+            </TooltipProvider>
         </ThemeProvider>
     </QueryClientProvider>
     );
