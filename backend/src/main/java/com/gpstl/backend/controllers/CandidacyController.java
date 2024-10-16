@@ -1,5 +1,6 @@
 package com.gpstl.backend.controllers;
 
+import com.gpstl.backend.contexts.UserContext;
 import com.gpstl.backend.dtos.CandidacyDto;
 import com.gpstl.backend.mappers.CandidacyMapper;
 import com.gpstl.backend.models.candidacy.Candidacy;
@@ -38,8 +39,14 @@ public class CandidacyController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/student/{id}")
-    public ResponseEntity<List<CandidacyDto>> getStudentCandidacies(@PathVariable Long id) {
+    @GetMapping("/student")
+    public ResponseEntity<List<CandidacyDto>> getStudentCandidacies() {
+        Long id = UserContext.getUserId();
+
+        if (id == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
         List<CandidacyDto> candidacies = candidacyService
                 .getStudentCandidacies(id)
                 .stream()

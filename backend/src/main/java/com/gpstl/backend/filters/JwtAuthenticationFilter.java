@@ -1,5 +1,7 @@
-package com.gpstl.backend.config;
+package com.gpstl.backend.filters;
 
+import com.gpstl.backend.contexts.UserContext;
+import com.gpstl.backend.models.user.User;
 import com.gpstl.backend.services.JwtService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
@@ -34,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = jwtService.getAccessTokenFromCookies(request);
         final String authHeader = request.getHeader("Authorization");
 
-        if((jwt == null && (authHeader ==  null || !authHeader.startsWith("Bearer ")))){
+        if((jwt == null && (authHeader ==  null || !authHeader.startsWith("Bearer "))) || request.getRequestURI().contains("/auth") ){
             filterChain.doFilter(request, response);
             return;
         }
@@ -58,8 +60,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 context.setAuthentication(authToken);
                 SecurityContextHolder.setContext(context);
+                User user = (User) userDetails;
+                UserContext.setUserId(user.getId());
             }
         }
         filterChain.doFilter(request,response);
+        UserContext.clear();
     }
 }
