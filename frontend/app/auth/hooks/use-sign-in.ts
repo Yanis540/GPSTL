@@ -11,16 +11,16 @@ import { UseMutateAsyncFunction, useMutation } from "react-query";
 import axios, { AxiosError } from "axios"; 
 import { useAuth } from "@/context/store/use-auth";
 import { SERVER_URL } from "@/env";
+import { useEffect } from "react";
 
 export const signInSchema = z.object({
     email : z.string().email(), 
     password : z.string().min(1), 
 })
 export type SignInSchema = z.infer<typeof signInSchema>
-interface DataResponse {
-    error?: {message: string}, 
-    user? : User, 
-    tokens ? :AuthCredentials
+interface DataResponse extends User{
+    access_token ? :string
+    refresh_token ? :string
 }
 interface useLoginMutation  {
     data ?: DataResponse
@@ -38,32 +38,37 @@ export const useSignIn = ()=>{
     } = useForm<SignInSchema>({
         resolver : zodResolver(signInSchema)
     }); 
-    const {set_user} = useAuth(); 
+    const {set_user,user} = useAuth();
     const router = useRouter(); 
     const {data,isLoading,error,mutateAsync:login}:useLoginMutation = useMutation({
-        mutationKey:["login"],
+        mutationKey:["auth","authenticate"],
         mutationFn:async({email,password}:SignInSchema)=>{
-            const response= await axios.post(SERVER_URL+"/auth/login",{email,password}); 
+            const response= await axios.post(SERVER_URL+"/auth/authenticate",{email,password}); 
             const data = await response.data ; 
             return data ; 
         }, 
         onSuccess:(data:DataResponse)=>{
-            const {user,tokens} = data ; 
-            if(!user || !tokens) 
+            const {access_token,refresh_token,...user} = data ; 
+            if(!user || !access_token || !refresh_token) 
                 return ; 
-            set_user({...user,tokens})
+            set_user({...user,
+                tokens:{
+                    access:{token:access_token!},
+                    refresh:{token:refresh_token!}
+                }
+            })
             
         }, 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError: (err:any)=>{
-           
                 toast(`Unknown error occured`,{className:"text-red-500 bg-red-300"})
         }
     }); 
-
     const onSubmit = async(data:SignInSchema)=>{
         try{
             await login(data);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // set_user(({...data,name:"Yanis",id:1233}) as any ); 
         }
         catch(err){
 
@@ -76,6 +81,7 @@ export const useSignIn = ()=>{
         signIn : {
             credentials : handleSubmit(onSubmit), 
         },
+        isLoading,
         errors
     }
 }

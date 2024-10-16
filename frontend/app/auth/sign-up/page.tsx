@@ -30,7 +30,7 @@ interface PageProps {
 };
 
 function Page({ }: PageProps) {
-    const { signUp ,register,errors,control} = useSignUp();
+    const { isLoading,signUp ,register,errors,control} = useSignUp();
     return (
         <div className="flex-1 flex  flex-col items-center justify-center">
             <form onSubmit={signUp.credentials}>
@@ -45,14 +45,14 @@ function Page({ }: PageProps) {
                         <div className="grid gap-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="first_name">First name</Label>
-                                    <Input {...register("first_name")} name="first_name" placeholder="Max" required />
-                                    {errors.first_name && (<h6 className="text-sm font-sm text-red-500">{errors.first_name.message}</h6>)}
+                                    <Label htmlFor="firstName">First name</Label>
+                                    <Input {...register("firstName")} name="firstName" placeholder="Max" required />
+                                    {errors.firstName && (<h6 className="text-sm font-sm text-red-500">{errors.firstName.message}</h6>)}
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="last_name">Last name</Label>
-                                    <Input  {...register("last_name")}id="last_name" placeholder="Robinson" required />
-                                    {errors.last_name && (<h6 className="text-sm font-sm text-red-500">{errors.last_name.message}</h6>)}
+                                    <Label htmlFor="lastName">Last name</Label>
+                                    <Input  {...register("lastName")}id="lastName" placeholder="Robinson" required />
+                                    {errors.lastName && (<h6 className="text-sm font-sm text-red-500">{errors.lastName.message}</h6>)}
 
                                 </div>
                             </div>
@@ -87,12 +87,10 @@ function Page({ }: PageProps) {
                            
                         </div>
                         <div className="grid gap-4 mt-4">
-                            <Button type="submit" className="w-full">
-                                Create an account
+                            <Button type="submit" className="w-full" disabled={isLoading}>
+                                {isLoading?<Icons.spinner className="h-6 w-6 text-background" /> :"Create an account"}
                             </Button>
-                            <Button variant="outline" className="w-full">
-                                Sign up with GitHub
-                            </Button>
+                           
                         </div>
                         <div className="mt-4 text-center text-sm">
                             Already have an account?{" "}
@@ -109,6 +107,7 @@ function Page({ }: PageProps) {
 
 
 import { Control, Controller } from 'react-hook-form'
+import { Icons } from '@/components/icons';
 function DateSelector ({control}:{control:Control<SignUpSchema>}){
     return (
         <Controller

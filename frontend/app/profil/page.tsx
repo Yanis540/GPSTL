@@ -1,109 +1,101 @@
-'use client'
-import React from 'react';
-// import Link from "next/link"
+"use client"
 
-import { Button } from "@/components/ui/button"
-// import { Input } from "@/components/ui/input"
-// import { Label } from "@/components/ui/label"
-import {
-    Card,CardFooter, 
-    CardContent,
-    // CardDescription, 
-    // CardHeader,
-    // CardTitle,
-  } from "@/components/ui/card"
-// import { useSignIn } from '../hooks/use-sign-in';
-// import Page from '../auth/sign-in/page';
+import React, { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { useProfil } from './use-profil'; // Importez le hook
 
+export default function SettingsProfilePage() {
+  const { user, saveUser } = useProfil();
+  const [isEditing, setIsEditing] = useState(false);
+  
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
 
+  const handleSave = (event: React.FormEvent) => {
+    event.preventDefault();
+    // Sauvegarde des données dans le service
+    saveUser({ username: user?.username, school: user?.school, bio: user?.bio });
+    setIsEditing(false);
+  };
 
-// interface PageProps {
-    
-// };
-
-// pages/profile.tsx
-
-// import { Card, CardContent, CardFooter } from "@shadcn/ui/card";
-// import { Typography } from "@shadcn/ui/typography";
-// import { Button } from "@shadcn/ui/button";
-// import Image from "next/image";
-
-
-import {  Body2, H5 } from "@/components/ui/typography";
-// import Image from "next/image";
-
-interface User {
-    id: number;
-    photo: Uint8Array;
-    firstname: string;
-    lastname: string;
-    email: string;
-    birthdate: Date;
-    role: string;
-}
-
-// const Page = ({ user }: { user: User }) => {
-const Page = () => {
-    // Créer un utilisateur en dur
-    const user: User = {
-        id: 1,
-        photo: new Uint8Array(), // Vous pouvez ajouter des données binaires réelles ici
-        firstname: 'John',
-        lastname: 'Doe',
-        email: 'john.doe@example.com',
-        birthdate: new Date('1990-01-01'),
-        role: 'Student'
-    };
+  if (!user) {
+    return <div>Chargement...</div>; // Gérer l'état de chargement
+  }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <Card className="w-full max-w-lg p-5 shadow-lg bg-white">
-        {/* Photo de profil */}
-        <div className="flex justify-center" style={{ color: 'black' }}>
-          {/* <Image
-            src={`data:image/jpeg;base64,${user.photo}`} // Photo sous forme de base64
-            alt="Profile photo"
-            width={150}
-            height={150}
-            className="rounded-full shadow-md"
-          /> */}
-          {" USER PHOTO "}
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="space-y-6 w-full max-w-6xl p-6 bg-white rounded-lg shadow-md">
+        <div>
+          <h3 className="text-lg font-medium text-black">Profil</h3>
+        </div>
+        <Separator />
+
+        <div className="flex flex-col items-center space-y-6" style={{ padding: '20px' }}>
+          {/* Placeholder for user photo */}
+          <div className="w-32 h-40 border-2 border-black rounded-md flex items-center justify-center mb-4">
+            <span className="text-gray-500">Photo</span>
+          </div>
+
+          {/* User information */}
+          {isEditing ? (
+            <form onSubmit={handleSave} className="space-y-4">
+              <input 
+                type="text" 
+                defaultValue={user.username} 
+                placeholder="Nom" 
+                className="border p-2 w-full" 
+                onChange={(e) => saveUser({ ...user, username: e.target.value })} 
+              />
+              <input 
+                type="text" 
+                defaultValue={user.school} 
+                placeholder="École" 
+                className="border p-2 w-full" 
+                onChange={(e) => saveUser({ ...user, school: e.target.value })} 
+              />
+              <textarea 
+                defaultValue={user.bio} 
+                placeholder="Description" 
+                className="border p-2 w-full h-32 resize-none" 
+                onChange={(e) => saveUser({ ...user, bio: e.target.value })} 
+              />
+              <div className="flex justify-between">
+                <Button type="button" onClick={() => setIsEditing(false)}>Annuler</Button>
+                <Button type="submit">Sauvegarder</Button>
+              </div>
+            </form>
+          ) : (
+            <div className="space-y-4 text-center w-full text-xl">
+              <div>
+                <h5 className="font-semibold text-black">{user.username}</h5>
+              </div>
+              <div>
+                <p>Contactez-moi : {user.email}</p>
+              </div>
+              <div>
+                <p className="break-words" style={{ maxWidth: '90%', marginLeft: '50px'}}>
+                  {user.bio}
+                </p>
+              </div>
+              <div>
+                <p>{new Date(user.birthdate).toLocaleDateString('fr-FR')}</p>
+              </div>
+              <div>
+                <p>{user.role} à {user.school}</p>
+              </div>
+              <Button className="mt-3 mx-auto block" onClick={handleEditClick}>
+                Modifier le Profil
+              </Button>
+            </div>
+          )}
         </div>
 
-        {/* Informations sur l'utilisateur */}
-        <CardContent className="mt-5 space-y-4" style={{ color: 'black' }}>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <H5 className="font-semibold">
-                {user.firstname } {user.lastname}
-              </H5>
-              <Body2  className="text-gray-500">
-                ID: {user.id}
-              </Body2>
-            </div>
-            <div>
-              <Body2>
-                Email: {user.email}
-              </Body2>
-              <Body2 >
-                Date de naissance: {new Date(user.birthdate).toLocaleDateString('fr-FR') }
-              </Body2>
-              <Body2>
-                Rôle: {user.role }
-              </Body2>
-            </div>
-          </div>
-        </CardContent>
-
-        {/* Bouton d'édition */}
-        <CardFooter className="flex justify-end">
-          <Button variant="outline" className="mt-3">
-            Modifier le profil
-          </Button>
-        </CardFooter>
-      </Card>
+        {/* <Button className="mt-3 mx-auto block" onClick={handleEditClick}>
+          Modifier le Profil
+        </Button> */}
+      </div>
     </div>
   );
-};
-
-export default Page;
+}
