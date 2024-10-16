@@ -41,8 +41,7 @@ public class User implements UserDetails {
     @Column(name = "birth_date", nullable = false)
     private Date birthdate;
 
-    @Lob
-    private byte[] photo;
+    private String photo;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
