@@ -1,5 +1,8 @@
 package com.gpstl.backend.services;
 
+import com.gpstl.backend.exception.InvalidCredentialsException;
+import com.gpstl.backend.exception.UserAlreadyExistsException;
+import com.gpstl.backend.exception.UserCreationException;
 import com.gpstl.backend.models.user.Recruiter;
 import com.gpstl.backend.models.user.Role;
 import com.gpstl.backend.models.user.Student;
@@ -17,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -36,64 +40,70 @@ public class AuthenticationService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        Optional<User> userExist = userRepository.findByEmail(request.getEmail());
+        Optional<User> userExists = userRepository.findByEmail(request.getEmail());
 
-        if (userExist.isPresent()) {
-            return null;
+        if (userExists.isPresent()) {
+            throw new UserAlreadyExistsException("User already exists");
         }
 
-        User user = null;
+        try {
 
-        if(request.getRole().equals(Role.RECRUITER)) {
-            Recruiter recruiter = new Recruiter();
-            recruiter.setFirstname(request.getFirstname());
-            recruiter.setLastname(request.getLastname());
-            recruiter.setEmail(request.getEmail());
-            recruiter.setPhoto(request.getPhoto());
-            recruiter.setPassword(request.getPassword()); // Pas besoin d'encoder ici, le service s'en occupe
-            recruiter.setBirthdate(request.getBirthDate());
-            recruiter.setCompany(companyRepository.findById(request.getCompanyId()).orElseThrow());
-            recruiter.setRole(Role.RECRUITER);
-            user = userService.saveUser(recruiter);
+            User user = null;
+
+            if(request.getRole().equals(Role.RECRUITER)) {
+                Recruiter recruiter = new Recruiter();
+                recruiter.setFirstname(request.getFirstname());
+                recruiter.setLastname(request.getLastname());
+                recruiter.setEmail(request.getEmail());
+                recruiter.setPhoto(request.getPhoto());
+                recruiter.setPassword(request.getPassword()); // Pas besoin d'encoder ici, le service s'en occupe
+                recruiter.setBirthdate(request.getBirthDate());
+                recruiter.setCompany(companyRepository.findById(request.getCompanyId()).orElseThrow());
+                recruiter.setRole(Role.RECRUITER);
+                user = userService.saveUser(recruiter);
+            }
+
+            if(request.getRole().equals(Role.STUDENT)) {
+                Student student = new Student();
+                student.setFirstname(request.getFirstname());
+                student.setLastname(request.getLastname());
+                student.setEmail(request.getEmail());
+                student.setPassword(request.getPassword());
+                student.setPhoto(request.getPhoto());
+                student.setBirthdate(request.getBirthDate());
+                student.setField(referentialRepository.findById(request.getFieldId()).orElseThrow());
+                student.setGrade(referentialRepository.findById(request.getGradeId()).orElseThrow());
+                student.setSkills(request.getSkillIds()
+                        .stream()
+                        .map(referentialRepository::findById)
+                        .map(s -> s.orElseThrow(() -> new IllegalArgumentException("Skill not found")))
+                        .toList());
+                student.setRole(Role.STUDENT);
+                user = userService.saveUser(student);
+            }
+
+            if(user == null){
+                throw new UserCreationException("User not created");
+            }
+
+            String accessToken = jwtService.generateToken(user);
+            var refreshToken = refreshTokenService.createRefreshToken(user.getId());
+
+            return AuthenticationResponse.builder()
+                    .accessToken(accessToken)
+                    .email(user.getEmail())
+                    .id(user.getId())
+                    .firstName(user.getFirstname())
+                    .lastName(user.getLastname())
+                    .photo(user.getPhoto())
+                    .refreshToken(refreshToken.getToken())
+                    .role(user.getRole().name())
+                    .tokenType(TokenType.BEARER.name())
+                    .build();
+
+        } catch (Exception e) {
+            throw new UserCreationException("User not created");
         }
-
-        if(request.getRole().equals(Role.STUDENT)) {
-            Student student = new Student();
-            student.setFirstname(request.getFirstname());
-            student.setLastname(request.getLastname());
-            student.setEmail(request.getEmail());
-            student.setPassword(request.getPassword());
-            student.setPhoto(request.getPhoto());
-            student.setBirthdate(request.getBirthDate());
-            student.setField(referentialRepository.findById(request.getFieldId()).orElseThrow());
-            student.setGrade(referentialRepository.findById(request.getGradeId()).orElseThrow());
-            student.setSkills(request.getSkillIds()
-                    .stream()
-                    .map(referentialRepository::findById)
-                    .map(s -> s.orElseThrow(() -> new IllegalArgumentException("Skill not found")))
-                    .toList());
-            student.setRole(Role.STUDENT);
-            user = userService.saveUser(student);
-        }
-
-        if(user == null){
-            return null;
-        }
-
-        String accessToken = jwtService.generateToken(user);
-        var refreshToken = refreshTokenService.createRefreshToken(user.getId());
-
-        return AuthenticationResponse.builder()
-                .accessToken(accessToken)
-                .email(user.getEmail())
-                .id(user.getId())
-                .firstName(user.getFirstname())
-                .lastName(user.getLastname())
-                .photo(user.getPhoto())
-                .refreshToken(refreshToken.getToken())
-                .role(user.getRole().name())
-                .tokenType(TokenType.BEARER.name())
-                .build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -105,9 +115,10 @@ public class AuthenticationService {
                     )
             );
         } catch (AuthenticationException e) {
-            return null;
+            throw new InvalidCredentialsException("Bad credentials");
         }
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Not found"));
 
         revokeAllUserTokens(user);
         String accessToken = jwtService.generateToken(user);

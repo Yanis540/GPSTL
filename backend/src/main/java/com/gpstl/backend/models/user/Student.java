@@ -1,5 +1,6 @@
 package com.gpstl.backend.models.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gpstl.backend.models.referential.Referential;
 import com.gpstl.backend.models.candidacy.Candidacy;
 import jakarta.persistence.*;
@@ -36,6 +37,7 @@ public class Student extends User {
     @Column(name = "monthly_current_candidacy")
     private Integer monthlyCurrentCandidacy; // ????
 
+    @JsonIgnoreProperties("student")
     @OneToMany(mappedBy = "student")
     private List<Candidacy> candidacies;
 }
