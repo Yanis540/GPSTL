@@ -46,16 +46,16 @@ export const useAddOffer = (callback?:(offer:Offer)=>void)=>{
         }
     }
     const {isLoading,mutateAsync:add}:useAddOfferMutation = useMutation({
-        mutationKey:["offers","add"],
+        mutationKey:["offer"],
         mutationFn:async(props:AddOfferSchema)=>{
-            const response= await axios.post(SERVER_URL+"/offers/add",{...props},config); 
+            const response= await axios.post(SERVER_URL+"/offer",{...props},config); 
             const data = await response.data ; 
             return data ; 
         }, 
         onSuccess:(data:DataResponse)=>{
             console.log(data);
             toast("New offer added"); 
-            if(!callback ) 
+            if(!callback) 
                 router.refresh();
             else 
                 callback(data?.offer)             
@@ -67,8 +67,8 @@ export const useAddOffer = (callback?:(offer:Offer)=>void)=>{
     }); 
     const onSubmit = async(data:AddOfferSchema)=>{
         try{
-            // await add(data);
-            console.log(data)
+            await add(data);
+            // console.log(data)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             // set_user(({...data,name:"Yanis",id:1233}) as any ); 
         }

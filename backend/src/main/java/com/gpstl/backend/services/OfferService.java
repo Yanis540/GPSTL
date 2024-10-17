@@ -34,7 +34,8 @@ public class OfferService {
     }
 
     public List<Offer> getAllOffers() {
-        return List.of();
+        List<Offer> offers= offerRepository.findAll();
+        return offers;
     }
 
     public Offer updateOffer(Long id, Offer offerDetails) {
@@ -42,5 +43,9 @@ public class OfferService {
     }
 
     public void deleteOffer(Long id) {
+    }
+    public List<Offer> getOffersByRecruiterId(Long recuiterId) {
+        List<Offer> offers = offerRepository.findByRecruiterId(recuiterId);
+        return offers;
     }
 }

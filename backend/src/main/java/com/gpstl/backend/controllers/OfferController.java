@@ -1,9 +1,14 @@
 package com.gpstl.backend.controllers;
 
+import com.gpstl.backend.contexts.UserContext;
 import com.gpstl.backend.dtos.OfferDto;
 import com.gpstl.backend.mappers.OfferMapper;
 import com.gpstl.backend.models.Offer;
+import com.gpstl.backend.models.user.Role;
+import com.gpstl.backend.models.user.User;
 import com.gpstl.backend.services.OfferService;
+import com.gpstl.backend.services.UserService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +25,7 @@ import java.util.stream.Collectors;
 public class OfferController {
 
     private final OfferService offerService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<List<OfferDto>> getAllOffers() {
@@ -42,8 +48,35 @@ public class OfferController {
     @PostMapping
     public ResponseEntity<OfferDto> createOffer(@RequestBody OfferDto offerToCreate) {
         try {
+            Long id = UserContext.getUserId();
+            if (id == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+            User user = userService.getUser(id); 
+            if(user.getRole() == Role.STUDENT)
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            System.out.println(">>>>>>>>>>"+offerToCreate);
+            offerToCreate.setRecruiterId(id);
             Offer offer = offerService.createOffer(OfferMapper.toEntity(offerToCreate));
             return new ResponseEntity<>(OfferMapper.toDto(offer), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    @GetMapping("/all/recruiter/offers/{recruiterId}")
+    public ResponseEntity<List<OfferDto>> getRecuiterOffer(@PathVariable Long recruiterId) {
+        try {
+            if (recruiterId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+            List<OfferDto> offers= offerService
+                // .getAllOffers()
+                .getOffersByRecruiterId(recruiterId)
+                .stream()
+                .map(OfferMapper::toDto)
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(offers);
+
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
