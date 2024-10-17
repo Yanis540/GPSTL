@@ -5,6 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { MoreHorizontal } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link'; // Importer Link de Next.js
 import React from 'react';
 
 interface TabHeaderProps {
@@ -33,6 +34,7 @@ function TabHeader({ }: TabHeaderProps) {
         </TableHeader>
     );
 };
+
 function TabRow({ }: TabHeaderProps) {
     return (
         <TableRow>
@@ -71,6 +73,11 @@ function TabRow({ }: TabHeaderProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <Link href="/recruiter/offers">
+                            <DropdownMenuItem asChild>
+                                <span>Recruitment</span>
+                            </DropdownMenuItem>
+                        </Link>
                         <DropdownMenuItem>Edit</DropdownMenuItem>
                         <DropdownMenuItem>Close</DropdownMenuItem>
                         <DropdownMenuItem>Delete</DropdownMenuItem>
@@ -81,8 +88,7 @@ function TabRow({ }: TabHeaderProps) {
     );
 };
 
-
 export {
-    TabHeader, 
+    TabHeader,
     TabRow
 };
