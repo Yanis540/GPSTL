@@ -4,6 +4,9 @@ import {
     CheckCircledIcon,
     CrossCircledIcon,
     StopwatchIcon,
+    RocketIcon,
+    ClockIcon,
+    CalendarIcon,
 } from "@radix-ui/react-icons";
 import {
     Card,
@@ -12,7 +15,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Container } from "@/app/candidacy/components/container"
+import {Container} from "@/app/candidacy/components/container"
 import {format} from "date-fns";
 import {fr} from "date-fns/locale";
 
@@ -48,35 +51,49 @@ const icons: Record<string, {
 };
 
 const formatDate = (isoDate: string) => {
-    return format(new Date(isoDate), "dd MMMM yyyy", { locale: fr });
+    return format(new Date(isoDate), "dd MMMM yyyy", {locale: fr});
 };
 
-export const CardItem: React.FC<CardItemProps> = ({ candidacy }) => (
+export const CardItem: React.FC<CardItemProps> = ({candidacy}) => (
     <Container>
-        <Card className="max-w-sm w-full h-60"> {/* Fixed width and height */}
+        <Card className="max-w-sm w-full h-60 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
             <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
                 <div className="space-y-1">
                     <CardTitle>{candidacy.offer?.name}</CardTitle>
-                    <CardDescription>{candidacy.offer?.description}</CardDescription>
+                    <CardDescription>
+                        {candidacy.offer?.description}
+                    </CardDescription>
+                </div>
+                <div className="flex items-center space-x-1 rounded-md text-secondary-foreground">
+                    <span className={`flex items-center ${icons[candidacy.status]?.color}`}>
+                        {candidacy.status && (
+                            React.createElement(icons[candidacy.status].icon, {
+                                className: "mr-1 h-4 w-4"
+                            })
+                        )}
+                        <span>{icons[candidacy.status]?.status}</span>
+                    </span>
                 </div>
             </CardHeader>
             <CardContent>
-                <div className="flex space-x-4 text-sm text-muted-foreground">
+                <div className="flex flex-col space-y-2 text-sm text-muted-foreground">
                     <div className="flex items-center">
-                        {candidacy.status && (
-                            React.createElement(icons[candidacy.status].icon, {
-                                className: `mr-1 h-3 w-3 fill-current ${icons[candidacy.status].color}` // Utiliser la couleur définie
-                            })
-                        )}
-                        {icons[candidacy.status].status}
+                        <ClockIcon className="mr-2 h-4 w-4 text-sky-400"/>
+                        <span>Rythme : {candidacy.offer?.rhythm}</span>
                     </div>
+
                     <div className="flex items-center">
-                         <span style={{fontSize: '14px', marginRight: '8px'}}>€</span>
-                        {candidacy.offer?.salary}
+                        <RocketIcon className="mr-2 h-4 w-4 text-amber-500"/>
+                        <span>Salaire : {candidacy.offer?.salary} €</span>
                     </div>
-                    <div>{formatDate(candidacy.dateOfCandidacy)}</div>
+
+                    <div className="flex items-center">
+                        <CalendarIcon className="mr-2 h-4 w-4 text-gray-500"/>
+                        <span>Date de candidature : {formatDate(candidacy.dateOfCandidacy)}</span>
+                    </div>
                 </div>
             </CardContent>
+
         </Card>
     </Container>
 );
