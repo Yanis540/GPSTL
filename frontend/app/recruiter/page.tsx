@@ -20,7 +20,6 @@ import {
   
 } from "@/components/ui/tabs"
 
-import { Sidebar } from './components/sidebar';
 import { DashboardHeader, TabCatgoriesHeader } from './components/dashboard.header';
 import { TabHeader, TabRow } from './components/table';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
@@ -41,9 +40,7 @@ function Dashboard() {
 
   }
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <Sidebar />
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+    <>
         <DashboardHeader>
           <Breadcrumb className="hidden md:flex">
             <BreadcrumbList>
@@ -85,8 +82,7 @@ function Dashboard() {
             </TabsContent>
           </Tabs>
         </main>
-      </div>
-    </div>
+    </>
   )
 }
 
