@@ -1,16 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 'use client'
 import React, { ReactNode } from 'react';
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+
 import { SidebarMobile } from './sidebar';
-import Link from 'next/link';
 import { File, ListFilter, PlusCircle, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 interface DashboardHeaderProps {

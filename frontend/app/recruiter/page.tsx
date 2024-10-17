@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 'use client'
 import React from 'react';
-
-
-
 import {
   Card,
   CardContent,
@@ -12,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
 import {
   Table,
   TableBody,
@@ -21,8 +17,7 @@ import {
 import {
   Tabs,
   TabsContent,
-  TabsList,
-  TabsTrigger,
+  
 } from "@/components/ui/tabs"
 
 import { Sidebar } from './components/sidebar';

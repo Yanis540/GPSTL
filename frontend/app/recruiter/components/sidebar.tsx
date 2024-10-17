@@ -3,7 +3,6 @@ import React from 'react';
 import {
     Home,
     LineChart,
-    Package,
     Package2,
     PanelLeft,
     Settings,
