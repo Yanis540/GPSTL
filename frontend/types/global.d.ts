@@ -20,12 +20,13 @@ declare global {
     
     interface Student extends User  {
         schoolName : string; // varchar(255), optional
-        gradeId: number; // bigint, optional
-        fieldId: number; // bigint, optional
+        skills: Referential[];
+        grade: Referential; // bigint, optional
+        field: Referential; // bigint, optional
     }
     interface Recruiter extends User  {
         company: Company; // bigint, optional
-
+        Offers: Offer[];
     }
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface Admin extends User  {
@@ -62,10 +63,21 @@ declare global {
         id: number; // bigint
         dateOfCandidacy: string; // timestamp(6), represented as ISO string
         dateOfResponse?: string; // timestamp(6), optional
-        offerId?: number; // bigint, optional
+        offer?: Offer;
         studentId?: number; // bigint, optional
         status: CandidacyStatus // varchar(255) with enum values
     }
+
+    interface Offer {
+        id: number;
+        name: string;
+        salary: number;
+        rhythm: string;
+        description: string;
+        publicationDate: string;
+        recruiterId: number
+    }
+
     // Refresh_Token table
     interface RefreshToken {
         id: number; // integer

@@ -4,7 +4,9 @@ Content-Type: application/json
 
 {
   "studentId": 2,
-  "offerId": 1
+  "offer": {
+    "id": 1
+  }
 }
 
 ### Get candidacies by student (id = 2)
