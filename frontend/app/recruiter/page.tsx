@@ -24,6 +24,7 @@ import { DashboardHeader, TabCatgoriesHeader } from './components/dashboard.head
 import { TabHeader, TabRow } from './components/table';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import Link from 'next/link';
+import { useGetRecruiterOffers } from './hooks/use-get-recruiter-offers';
 
 interface PageProps {
 
@@ -36,18 +37,25 @@ function Page({ }: PageProps) {
 };
 
 function Dashboard() {
-  const offer  = {
-    id : 1, 
-    name : "Full stack web developper", 
-    img : {
-        url :"https://companieslogo.com/img/orig/CAP.PA-9b4110b0.png?t=1720244491"
-    }, 
-    status : "active",
-    numberOfCandidates : 25, 
-    publicationDate : "2023-07-12 10:42 AM"
+  const {data} = useGetRecruiterOffers();
+  console.log(data)
+  // const offer  = {
+  //   id : 1, 
+  //   name : "Full stack web developper", 
+    
+  //   publicationDate : "2023-07-12 10:42 AM"
 
-  } 
-  const offers = [offer]
+  // } 
+  // const [offer]
+
+  const offers = 
+    data?.offers.map((o)=>({
+      ...o,img : {
+        url :"https://companieslogo.com/img/orig/CAP.PA-9b4110b0.png?t=1720244491"
+      }, 
+      status : "active",
+      numberOfCandidates : 25, 
+  })as RecruiterOfferData)
 
   return (
     <>
@@ -79,7 +87,7 @@ function Dashboard() {
                     <TabHeader />
                     <TableBody>
                       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                      {offers.map((offer:any,i)=>(
+                      {offers?.map((offer:any,i:number)=>(
                         <TabRow key={i} offer={offer as RecruiterOfferData} />
                       ))}
                     </TableBody>

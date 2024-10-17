@@ -51,7 +51,7 @@ function TabRow({ offer }: TabRowProps) {
                     width="48"
                 />
             </TableCell>
-            <TableCell className="font-medium cursor-pointer" onClick={handleRedirect}>
+            <TableCell className="font-bold cursor-pointer capitalize" onClick={handleRedirect}>
                 {offer.name}
             </TableCell>
             <TableCell>
@@ -61,7 +61,7 @@ function TabRow({ offer }: TabRowProps) {
                 {offer.numberOfCandidates}
             </TableCell>
             <TableCell className="hidden md:table-cell">
-                {offer.publicationDate}
+                {new Date(offer.publicationDate).toDateString()}
             </TableCell>
             <TableCell>
                 <DropdownMenu>
