@@ -30,11 +30,13 @@ public class OfferService {
     }
 
     public Optional<Offer> getOfferById(Long id) {
-        return Optional.empty();
+        //return Optional.empty();
+        return offerRepository.findById(id);
     }
 
     public List<Offer> getAllOffers() {
-        return List.of();
+        //return List.of();
+        return offerRepository.findAll();
     }
 
     public Offer updateOffer(Long id, Offer offerDetails) {
@@ -42,5 +44,6 @@ public class OfferService {
     }
 
     public void deleteOffer(Long id) {
+        offerRepository.deleteById(id);
     }
 }
