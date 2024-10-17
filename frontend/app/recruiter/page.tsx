@@ -48,9 +48,7 @@ function Dashboard() {
 
   } 
   const offers = [offer]
-  const handleCreateNewOffer = () => {
 
-  }
   return (
     <>
         <DashboardHeader>
@@ -67,13 +65,13 @@ function Dashboard() {
         </DashboardHeader>
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           <Tabs defaultValue="all">
-            <TabCatgoriesHeader newOffer={handleCreateNewOffer} />
+            <TabCatgoriesHeader  />
             <TabsContent value="all">
               <Card x-chunk="dashboard-06-chunk-0">
                 <CardHeader>
-                  <CardTitle>Products</CardTitle>
+                  <CardTitle>Offers</CardTitle>
                   <CardDescription>
-                    Manage your products and view their sales performance.
+                    Manage your offers and view their performance.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -90,7 +88,7 @@ function Dashboard() {
                 <CardFooter>
                   <div className="text-xs text-muted-foreground">
                     Showing <strong>1-10</strong> of <strong>32</strong>{" "}
-                    products
+                    offers
                   </div>
                 </CardFooter>
               </Card>
