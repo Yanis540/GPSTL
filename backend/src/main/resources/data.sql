@@ -265,3 +265,388 @@ WHERE NOT EXISTS (SELECT 1 FROM referential WHERE type = 'FIELD' AND value = 'In
 INSERT INTO referential (id, type, value)
 SELECT 46, 'FIELD', 'Recherche'
 WHERE NOT EXISTS (SELECT 1 FROM referential WHERE type = 'FIELD' AND value = 'Recherche');
+
+---Recruiters
+
+INSERT INTO _user (
+    monthly_current_candidacy,
+    birth_date,
+    company_id,
+    field_id,
+    grade_id,
+    id,
+    user_type,
+    email,
+    first_name,
+    last_name,
+    password,
+    role,
+    school_name,
+    photo
+)
+SELECT
+    NULL,  -- Assuming monthly_current_candidacy can be NULL
+    '1985-07-16 00:00:00',  -- Example birth_date
+    5,  -- Example company_id
+    NULL,  -- Example field_id
+    NULL,  -- Example grade_id
+    1,  -- Unique ID for this user
+    'RECRUITER',  -- user_type as requested
+    'recruiter@example.com',  -- Example email
+    'John',  -- First name
+    'Doe',  -- Last name
+    '$2a$10$hnH33/Pop9/CFi0dh13BJuvKCNtpH/EO5HrHl2gZXh.5C02JxKGoW',  -- Example password
+    'RECRUITER',  -- Role
+    NULL,  -- school_name can be NULL
+    NULL  -- photo can be NULL
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM _user
+    WHERE email = 'recruiter@example.com'
+);
+
+INSERT INTO _user (
+    monthly_current_candidacy,
+    birth_date,
+    company_id,
+    field_id,
+    grade_id,
+    id,
+    user_type,
+    email,
+    first_name,
+    last_name,
+    password,
+    role,
+    school_name,
+    photo
+)
+SELECT
+    NULL,  -- Assuming monthly_current_candidacy can be NULL
+    '1985-07-16 00:00:00',  -- Example birth_date
+    6,  -- Example company_id
+    NULL,  -- Example field_id
+    NULL,  -- Example grade_id
+    2,  -- Unique ID for this user
+    'RECRUITER',  -- user_type as requested
+    'recruiter2@example.com',  -- Example email
+    'John',  -- First name
+    'Doe',  -- Last name
+    '$2a$10$hnH33/Pop9/CFi0dh13BJuvKCNtpH/EO5HrHl2gZXh.5C02JxKGoW',  -- Example password
+    'RECRUITER',  -- Role
+    NULL,  -- school_name can be NULL
+    NULL  -- photo can be NULL
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM _user
+    WHERE email = 'recruiter2@example.com'
+);
+
+-- Insert first student
+
+INSERT INTO _user (
+    monthly_current_candidacy,
+    birth_date,
+    company_id,
+    field_id,
+    grade_id,
+    id,
+    user_type,
+    email,
+    first_name,
+    last_name,
+    password,
+    role,
+    school_name,
+    photo
+)
+SELECT
+    5,  -- Example monthly_current_candidacy
+    '2000-05-10 00:00:00',  -- Example birth_date
+    NULL,  -- No company_id for students
+    36,  -- Example field_id (referencing referential table, e.g., for "Engineering")
+    5,  -- Example grade_id (referencing referential table, e.g., "Bachelor's")
+    3,  -- Unique ID for this student
+    'STUDENT',  -- user_type as 'STUDENT'
+    'student1@example.com',  -- Unique email
+    'Alice',  -- First name
+    'Smith',  -- Last name
+    '$2a$10$hnH33/Pop9/CFi0dh13BJuvKCNtpH/EO5HrHl2gZXh.5C02JxKGoW',  -- Example password (hashed for security)
+    'STUDENT',  -- Role as 'STUDENT'
+    'Sorbonne Université',  -- Example school_name
+    NULL  -- No photo provided
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM _user
+    WHERE email = 'student1@example.com'
+);
+
+-- Insert second student
+INSERT INTO _user (
+    monthly_current_candidacy,
+    birth_date,
+    company_id,
+    field_id,
+    grade_id,
+    id,
+    user_type,
+    email,
+    first_name,
+    last_name,
+    password,
+    role,
+    school_name,
+    photo
+)
+SELECT
+    3,  -- Example monthly_current_candidacy
+    '2001-11-20 00:00:00',  -- Example birth_date
+    NULL,  -- No company_id for students
+    36,  -- Example field_id (referencing referential table, e.g., for "Mathematics")
+    5,  -- Example grade_id (referencing referential table, e.g., "Master's")
+    4,  -- Unique ID for this student
+    'STUDENT',  -- user_type as 'STUDENT'
+    'student2@example.com',  -- Unique email
+    'Bob',  -- First name
+    'Johnson',  -- Last name
+    '$2a$10$hnH33/Pop9/CFi0dh13BJuvKCNtpH/EO5HrHl2gZXh.5C02JxKGoW',  -- Example password (hashed for security)
+    'STUDENT',  -- Role as 'STUDENT'
+    'Paris Cité Université',  -- Example school_name
+    NULL  -- No photo provided
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM _user
+    WHERE email = 'student2@example.com'
+);
+
+-- Associate skills for the first student (Alice Smith, user_id = 1001)
+INSERT INTO ass_user_skill (skill_id, user_id)
+SELECT
+    9,  -- Example skill_id (e.g., "Python" from the referential table)
+    4  -- Alice Smith's user_id
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM ass_user_skill
+    WHERE skill_id = 9
+      AND user_id = 4
+);
+
+INSERT INTO ass_user_skill (skill_id, user_id)
+SELECT
+    10,  -- Example skill_id (e.g., "Machine Learning" from the referential table)
+    4  -- Alice Smith's user_id
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM ass_user_skill
+    WHERE skill_id = 10
+      AND user_id = 4
+);
+
+INSERT INTO ass_user_skill (skill_id, user_id)
+SELECT
+    9,
+    3
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM ass_user_skill
+    WHERE skill_id = 9
+      AND user_id = 3
+);
+
+INSERT INTO ass_user_skill (skill_id, user_id)
+SELECT
+    10,
+    3
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM ass_user_skill
+    WHERE skill_id = 10
+      AND user_id = 3
+);
+
+-- Insert first offer
+INSERT INTO offer (
+    salary,
+    id,
+    publication_date,
+    recruiter_id,
+    description,
+    name,
+    rhythm
+)
+SELECT
+    60000.00,  -- Salary
+    1,  -- Unique ID for this offer
+    '2024-10-17 09:00:00',  -- Publication date
+    1,  -- recruiter_id (foreign key, assuming recruiter with id = 1 exists)
+    'Develop software solutions for fintech',  -- Description
+    'Software Engineer',  -- Job name
+    'Full-time'  -- Rhythm (e.g., full-time)
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM offer
+    WHERE name = 'Software Engineer'
+);
+
+-- Insert second offer
+INSERT INTO offer (
+    salary,
+    id,
+    publication_date,
+    recruiter_id,
+    description,
+    name,
+    rhythm
+)
+SELECT
+    45000.00,  -- Salary
+    2,  -- Unique ID for this offer
+    '2024-10-17 09:00:00',  -- Publication date
+    1,  -- recruiter_id (assuming recruiter with id = 2 exists)
+    'Manage digital marketing campaigns for clients',  -- Description
+    'Marketing Manager',  -- Job name
+    'Part-time'  -- Rhythm
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM offer
+    WHERE name = 'Marketing Manager'
+);
+
+-- Insert third offer
+INSERT INTO offer (
+    salary,
+    id,
+    publication_date,
+    recruiter_id,
+    description,
+    name,
+    rhythm
+)
+SELECT
+    75000.00,  -- Salary
+    3,  -- Unique ID for this offer
+    '2024-10-17 09:00:00',  -- Publication date
+    2,  -- recruiter_id (assuming recruiter with id = 1 exists)
+    'Lead data analytics initiatives',  -- Description
+    'Data Scientist',  -- Job name
+    'Full-time'  -- Rhythm
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM offer
+    WHERE name = 'Data Scientist'
+);
+
+-- Insert fourth offer
+INSERT INTO offer (
+    salary,
+    id,
+    publication_date,
+    recruiter_id,
+    description,
+    name,
+    rhythm
+)
+SELECT
+    55000.00,  -- Salary
+    4,  -- Unique ID for this offer
+    '2024-10-17 09:00:00',  -- Publication date
+    2,  -- recruiter_id (assuming recruiter with id = 3 exists)
+    'Oversee customer success team',  -- Description
+    'Customer Success Manager',  -- Job name
+    'Full-time'  -- Rhythm
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM offer
+    WHERE name = 'Customer Success Manager'
+);
+
+-- Insert first candidacy (Student Alice Smith applies to the Software Engineer offer)
+INSERT INTO candidacy (
+    date_of_candidacy,
+    date_of_response,
+    id,
+    offer_id,
+    student_id,
+    status
+)
+SELECT
+    '2024-10-17 10:00:00',  -- Date of candidacy
+    NULL,  -- No response yet
+    1,  -- Unique ID for this candidacy
+    1,  -- Offer ID for 'Software Engineer' (offer_id = 1)
+    3,  -- Alice Smith's student_id (student_id = 3)
+    'REFUSED'  -- Status of the candidacy
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM candidacy
+    WHERE offer_id = 1 AND student_id = 3
+);
+
+-- Insert second candidacy (Student Bob Johnson applies to the Marketing Manager offer)
+INSERT INTO candidacy (
+    date_of_candidacy,
+    date_of_response,
+    id,
+    offer_id,
+    student_id,
+    status
+)
+SELECT
+    '2024-10-17 11:00:00',  -- Date of candidacy
+    NULL,  -- No response yet
+    2,  -- Unique ID for this candidacy
+    2,  -- Offer ID for 'Marketing Manager' (offer_id = 2)
+    4,  -- Bob Johnson's student_id (student_id = 4)
+    'PENDING'  -- Status of the candidacy
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM candidacy
+    WHERE offer_id = 2 AND student_id = 4
+);
+
+-- Insert third candidacy (Alice Smith applies to the Data Scientist offer)
+INSERT INTO candidacy (
+    date_of_candidacy,
+    date_of_response,
+    id,
+    offer_id,
+    student_id,
+    status
+)
+SELECT
+    '2024-10-18 09:30:00',  -- Date of candidacy
+    '2024-10-19 14:00:00',  -- Response date
+    3,  -- Unique ID for this candidacy
+    3,  -- Offer ID for 'Data Scientist' (offer_id = 3)
+    3,  -- Alice Smith's student_id (student_id = 3)
+    'ACCEPTED'  -- Status of the candidacy
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM candidacy
+    WHERE offer_id = 3 AND student_id = 3
+);
+
+-- Insert fourth candidacy (Bob Johnson applies to the Customer Success Manager offer)
+INSERT INTO candidacy (
+    date_of_candidacy,
+    date_of_response,
+    id,
+    offer_id,
+    student_id,
+    status
+)
+SELECT
+    '2024-10-18 09:45:00',  -- Date of candidacy
+    NULL,  -- No response yet
+    4,  -- Unique ID for this candidacy
+    4,  -- Offer ID for 'Customer Success Manager' (offer_id = 4)
+    4,  -- Bob Johnson's student_id (student_id = 4)
+    'PENDING'  -- Status of the candidacy
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM candidacy
+    WHERE offer_id = 4 AND student_id = 4
+);
+
+
+
