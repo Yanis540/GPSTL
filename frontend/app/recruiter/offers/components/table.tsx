@@ -3,11 +3,22 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { MoreHorizontal } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from '@/components/ui/dialog';
+import * as RadioGroup from '@radix-ui/react-radio-group';
+
+interface Candidacy {
+    id: number;
+    studentName: string;
+    status: 'PENDING' | 'ACCEPTED' | 'REFUSED';
+    dateOfCandidacy: string;
+    dateOfResponse: string | null;
+    studentPhoto: string;
+}
 
 // Données fictives pour les candidatures
-const mockCandidacies = [
+const mockCandidacies: Candidacy[] = [
     {
         id: 1,
         studentName: 'Alice Martin',
@@ -54,6 +65,27 @@ export function TabHeader() {
 }
 
 export function TabRow() {
+    const [openDialog, setOpenDialog] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState<'PENDING' | 'ACCEPTED' | 'REFUSED'>('PENDING');
+    const [currentCandidacy, setCurrentCandidacy] = useState<Candidacy | null>(null);
+
+    const handleStatusChange = (newStatus: 'PENDING' | 'ACCEPTED' | 'REFUSED') => {
+        setSelectedStatus(newStatus);
+    };
+
+    const handleSaveStatus = () => {
+        if (currentCandidacy) {
+            currentCandidacy.status = selectedStatus;
+            setOpenDialog(false);
+        }
+    };
+
+    const openEditDialog = (candidacy: Candidacy) => {
+        setCurrentCandidacy(candidacy);
+        setSelectedStatus(candidacy.status);
+        setOpenDialog(true);
+    };
+
     return (
         <>
             {mockCandidacies.map((candidacy) => (
@@ -88,9 +120,64 @@ export function TabRow() {
                                         <span>View Profile</span>
                                     </DropdownMenuItem>
                                 </Link>
-                                <DropdownMenuItem>Edit Decision</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => openEditDialog(candidacy)}>
+                                    Edit Decision
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
+
+                        {/* Dialog Component */}
+                        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Edit Decision for {currentCandidacy?.studentName}</DialogTitle>
+                                </DialogHeader>
+                                <div className="mb-4">
+                                    <p className="text-sm">Select the new status for this candidacy:</p>
+                                    <RadioGroup.Root
+                                        className="space-y-4 mt-4"
+                                        value={selectedStatus}
+                                        onValueChange={handleStatusChange}
+                                    >
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroup.Item
+                                                value="PENDING"
+                                                id="pending"
+                                                className="w-4 h-4 rounded-full border border-gray-400"
+                                            >
+                                                <div className={`w-full h-full ${selectedStatus === 'PENDING' ? 'bg-yellow-400' : ''}`} />
+                                            </RadioGroup.Item>
+                                            <label htmlFor="pending">Pending</label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroup.Item
+                                                value="ACCEPTED"
+                                                id="accepted"
+                                                className="w-4 h-4 rounded-full border border-gray-400"
+                                            >
+                                                <div className={`w-full h-full ${selectedStatus === 'ACCEPTED' ? 'bg-green-800' : ''}`} />
+                                            </RadioGroup.Item>
+                                            <label htmlFor="accepted">Accepted</label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroup.Item
+                                                value="REFUSED"
+                                                id="refused"
+                                                className="w-4 h-4 rounded-full border border-gray-400"
+                                            >
+                                                <div className={`w-full h-full ${selectedStatus === 'REFUSED' ? 'bg-red-800' : ''}`} />
+                                            </RadioGroup.Item>
+                                            <label htmlFor="refused">Refused</label>
+                                        </div>
+                                    </RadioGroup.Root>
+
+                                </div>
+                                <DialogFooter>
+                                    <Button variant="secondary" onClick={() => setOpenDialog(false)}>Cancel</Button>
+                                    <Button type="submit" onClick={handleSaveStatus}>Save</Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
                     </TableCell>
                 </TableRow>
             ))}
