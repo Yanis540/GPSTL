@@ -5,6 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { MoreHorizontal } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface TabHeaderProps {
@@ -33,10 +34,15 @@ function TabHeader({ }: TabHeaderProps) {
         </TableHeader>
     );
 };
-function TabRow({ }: TabHeaderProps) {
+interface TabRowProps {
+    offer : RecruiterOfferData
+}
+function TabRow({ offer }: TabRowProps) {
+    const router = useRouter();
+    const handleRedirect = ()=>router.push(`/recruiter/offers/${offer.id}`)
     return (
         <TableRow>
-            <TableCell className="hidden sm:table-cell">
+            <TableCell className="hidden sm:table-cell cursor-pointer" onClick={handleRedirect}>
                 <Image
                     alt="Product image"
                     className="aspect-square rounded-md object-fit"
@@ -45,17 +51,17 @@ function TabRow({ }: TabHeaderProps) {
                     width="48"
                 />
             </TableCell>
-            <TableCell className="font-medium">
-                Full stack web developper
+            <TableCell className="font-medium cursor-pointer" onClick={handleRedirect}>
+                {offer.name}
             </TableCell>
             <TableCell>
-                <Badge variant="outline">Active</Badge>
+                <Badge variant="outline" className="capitalize">{offer.status}</Badge>
             </TableCell>
             <TableCell className="hidden md:table-cell">
-                25
+                {offer.numberOfCandidates}
             </TableCell>
             <TableCell className="hidden md:table-cell">
-                2023-07-12 10:42 AM
+                {offer.publicationDate}
             </TableCell>
             <TableCell>
                 <DropdownMenu>

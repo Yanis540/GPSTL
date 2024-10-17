@@ -36,6 +36,18 @@ function Page({ }: PageProps) {
 };
 
 function Dashboard() {
+  const offer  = {
+    id : 1, 
+    name : "Full stack web developper", 
+    img : {
+        url :"https://companieslogo.com/img/orig/CAP.PA-9b4110b0.png?t=1720244491"
+    }, 
+    status : "active",
+    numberOfCandidates : 25, 
+    publicationDate : "2023-07-12 10:42 AM"
+
+  } 
+  const offers = [offer]
   const handleCreateNewOffer = () => {
 
   }
@@ -68,7 +80,10 @@ function Dashboard() {
                   <Table>
                     <TabHeader />
                     <TableBody>
-                      <TabRow />
+                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                      {offers.map((offer:any,i)=>(
+                        <TabRow key={i} offer={offer as RecruiterOfferData} />
+                      ))}
                     </TableBody>
                   </Table>
                 </CardContent>
