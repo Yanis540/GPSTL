@@ -53,7 +53,7 @@ const formatDate = (isoDate: string) => {
 
 export const CardItem: React.FC<CardItemProps> = ({ candidacy }) => (
     <Container>
-        <Card className="max-w-sm w-full h-64"> {/* Fixed width and height */}
+        <Card className="max-w-sm w-full h-60"> {/* Fixed width and height */}
             <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
                 <div className="space-y-1">
                     <CardTitle>{candidacy.offer?.name}</CardTitle>

@@ -107,18 +107,22 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
-                            request.getPassword()
-                    )
-            );
-        } catch (AuthenticationException e) {
-            throw new InvalidCredentialsException("Bad credentials");
-        }
+        //try {
+        //    authenticationManager.authenticate(
+        //            new UsernamePasswordAuthenticationToken(
+        //                    request.getEmail(),
+        //                    request.getPassword()
+        //            )
+        //    );
+        //} catch (AuthenticationException e) {
+        //    throw new InvalidCredentialsException("Bad credentials");
+        //}
 
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Not found"));
+
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new InvalidCredentialsException("Bad credentials");
+        }
 
         revokeAllUserTokens(user);
         String accessToken = jwtService.generateToken(user);

@@ -26,7 +26,7 @@ declare global {
     }
     interface Recruiter extends User  {
         company: Company; // bigint, optional
-
+        Offers: Offer[];
     }
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface Admin extends User  {

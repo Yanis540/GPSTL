@@ -4,10 +4,18 @@
 import React from 'react';
 import { CardItem } from '@/app/candidacy/components/card-item'
 import { useCandidacies } from "./hooks/use-candidacies";
+import {useAuth} from "@/context/store/use-auth";
 
 function Page() {
 
-    const { candidacies, isLoading, error } = useCandidacies();
+    const { user } = useAuth();
+    const token = user?.tokens?.access.token;
+
+    if (!token) {
+        throw new Error('Token not found');
+    }
+
+    const { candidacies, isLoading, error } = useCandidacies(token);
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -18,7 +26,7 @@ function Page() {
     }
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mt-4">
             {candidacies?.map(candidacy => (
                 <CardItem key={candidacy.id} candidacy={candidacy} />
             ))}

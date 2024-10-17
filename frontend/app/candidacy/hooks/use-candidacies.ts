@@ -6,27 +6,20 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { SERVER_URL } from "@/env";
 
-export const fetchCandidacies = async () => {
-    const user = JSON.parse(<string>localStorage.getItem("store-auth"));
-    const token = user?.state?.user?.tokens?.access?.token;
+export const fetchCandidacies = async (token: string) => {
 
-    if (!token) {
-        throw new Error('Token not found');
-    }
-
-    // Ajout de l'en-tête Authorization avec le token Bearer
     const response = await axios.get(`${SERVER_URL}/candidacy/student`, {
         headers: {
-            Authorization: `Bearer ${token}`, // Bearer token ajouté ici
+            Authorization: `Bearer ${token}`,
         },
     });
     return response.data;
 };
 
-export const useCandidacies = () => {
+export const useCandidacies = (token: string) => {
     const { data, isLoading, error } = useQuery<Candidacy[], Error>(
         "candidacies",
-        fetchCandidacies,
+        () => fetchCandidacies(token),
         {
             onError: (err) => {
                 toast(`Error fetching candidacies: ${err.message}`, {

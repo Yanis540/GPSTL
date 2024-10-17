@@ -291,11 +291,11 @@ SELECT
     NULL,  -- Example field_id
     NULL,  -- Example grade_id
     1,  -- Unique ID for this user
-    'RECRUITER',  -- user_type as requested
+    'Recruiter',  -- user_type as requested
     'recruiter@example.com',  -- Example email
     'John',  -- First name
     'Doe',  -- Last name
-    '$2a$10$hnH33/Pop9/CFi0dh13BJuvKCNtpH/EO5HrHl2gZXh.5C02JxKGoW',  -- Example password
+    'password',  -- Example password
     'RECRUITER',  -- Role
     NULL,  -- school_name can be NULL
     NULL  -- photo can be NULL
@@ -328,11 +328,11 @@ SELECT
     NULL,  -- Example field_id
     NULL,  -- Example grade_id
     2,  -- Unique ID for this user
-    'RECRUITER',  -- user_type as requested
+    'Recruiter',  -- user_type as requested
     'recruiter2@example.com',  -- Example email
     'John',  -- First name
     'Doe',  -- Last name
-    '$2a$10$hnH33/Pop9/CFi0dh13BJuvKCNtpH/EO5HrHl2gZXh.5C02JxKGoW',  -- Example password
+    'password',  -- Example password
     'RECRUITER',  -- Role
     NULL,  -- school_name can be NULL
     NULL  -- photo can be NULL
@@ -367,11 +367,11 @@ SELECT
     36,  -- Example field_id (referencing referential table, e.g., for "Engineering")
     5,  -- Example grade_id (referencing referential table, e.g., "Bachelor's")
     3,  -- Unique ID for this student
-    'STUDENT',  -- user_type as 'STUDENT'
+    'Student',  -- user_type as 'STUDENT'
     'student1@example.com',  -- Unique email
     'Alice',  -- First name
     'Smith',  -- Last name
-    '$2a$10$hnH33/Pop9/CFi0dh13BJuvKCNtpH/EO5HrHl2gZXh.5C02JxKGoW',  -- Example password (hashed for security)
+    'password',  -- Example password (hashed for security)
     'STUDENT',  -- Role as 'STUDENT'
     'Sorbonne Université',  -- Example school_name
     NULL  -- No photo provided
@@ -405,11 +405,11 @@ SELECT
     36,  -- Example field_id (referencing referential table, e.g., for "Mathematics")
     5,  -- Example grade_id (referencing referential table, e.g., "Master's")
     4,  -- Unique ID for this student
-    'STUDENT',  -- user_type as 'STUDENT'
+    'Student',  -- user_type as 'STUDENT'
     'student2@example.com',  -- Unique email
     'Bob',  -- First name
     'Johnson',  -- Last name
-    '$2a$10$hnH33/Pop9/CFi0dh13BJuvKCNtpH/EO5HrHl2gZXh.5C02JxKGoW',  -- Example password (hashed for security)
+    'password',  -- Example password (hashed for security)
     'STUDENT',  -- Role as 'STUDENT'
     'Paris Cité Université',  -- Example school_name
     NULL  -- No photo provided
