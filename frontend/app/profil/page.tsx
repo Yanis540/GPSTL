@@ -77,50 +77,75 @@ const Profile: React.FC = () => {
     {/* Profile page */}
     
     {/* <div className="flex items-center justify-center min-h-screen bg-gray-100"> */}
-      <div className="space-y-6 w-full max-w-6xl p-6 bg-white rounded-lg shadow-md">
+      <div className="space-y-6 w-full max-w-6xl p-6 rounded-lg shadow-md">
         <div>
           <h3 className="text-lg font-medium text-black">Profil</h3>
         </div>
         <Separator />
+        <div className="items-center w-full">
+        <div className="flex  items-center space-x-6 w-full " style={{ padding: '20px' }}>
+            {/* Affichage de la photo de l'utilisateur */}
+            <div className="w-40 h-48 rounded-md flex items-center justify-center ">
+              {user?.photo ? (
+                <img 
+                  src={user?.photo} 
+                  alt="Photo de l'utilisateur" 
+                  className="w-full h-full object-cover rounded-md"
+                />
+              ) : (
+                <span className="text-gray-500">Photo</span>
+              )}
+            </div>
 
-        <div className="flex flex-col items-center space-y-6" style={{ padding: '20px' }}>
-          {/* Affichage de la photo de l'utilisateur */}
-          <div className="w-40 h-48 rounded-md flex items-center justify-center mb-4">
-            {user?.photo ? (
-              <img 
-                src={user?.photo} 
-                alt="Photo de l'utilisateur" 
-                className="w-full h-full object-cover rounded-md"
+            {user?.role === 'STUDENT' ? (
+              <div className="w-full h-48 flex flex-col justify-center space-y-2 p-4">
+                <h4 className="text-4xl font-semibold text-black">{user?.firstname} {user?.lastname}</h4>
+                <p className="text-gray-500">Contactez-moi : {user?.email}</p>
+                <p className="text-gray-500">Né(e) le {new Date(user?.birthdate).toLocaleDateString('fr-FR')}</p>
+                <p className="text-gray-500">Étudiant(e) à {user?.schoolName} en {user?.field?.value}</p>
+                <p className="text-gray-500">Niveau : {user?.grade?.value}</p>
+              </div>
+            ) : user?.role === 'RECRUITER' ? (
+              <div className="w-full h-48 border-2 border-green-500 flex flex-col justify-center space-y-2 p-4">
+                <h4 className="text-4xl font-semibold text-black">{user?.firstname} {user?.lastname}</h4>
+                <p className="text-gray-500">Contactez-moi : {user?.email}</p>
+                <p className="text-gray-500">Né(e) le {new Date(user?.birthdate).toLocaleDateString('fr-FR')}</p>
+              </div>
+            ) : null}
+            {/* <div className="w-full h-48 border-2 border-green-500 flex flex-col justify-center space-y-2 p-4">
+              <h4 className="text-4xl font-semibold text-black">{user?.firstname} {user?.lastname}</h4>
+              <p className="text-gray-500">Contactez-moi : {user?.email}</p>
+              <p className="text-gray-500">Né(e) le {new Date(user?.birthdate).toLocaleDateString('fr-FR')}</p>
+              {user?.role === 'STUDENT' && (
+                <p className="text-gray-500">Etudiant(e) à {user?.schoolName} en {user?.field?.value}</p>
+              )}
+              <p className="text-gray-500">Niveau : {user?.grade?.value}</p>
+            </div> */}
+          </div>
+            {/* Affichage du profil en fonction du type d'utilisateur */}
+            {user?.role === 'STUDENT' ? (
+              <StudentProfile
+                student={user as Student}
+                isEditing={isEditing}
+                saveUser={saveUser}
+                setIsEditing={setIsEditing}
+              />
+            ) : user?.role === 'RECRUITER' ? (
+              <RecruiterProfile
+                recruiter={user as Recruiter}
+                isEditing={isEditing}
+                saveUser={saveUser}
+                setIsEditing={setIsEditing}
               />
             ) : (
-              <span className="text-gray-500">Photo</span>
+              <div>Profil utilisateur non supporté</div>
             )}
-          </div>
-
-          {/* Affichage du profil en fonction du type d'utilisateur */}
-          {user?.role === 'STUDENT' ? (
-            <StudentProfile
-              student={user as Student}
-              isEditing={isEditing}
-              saveUser={saveUser}
-              setIsEditing={setIsEditing}
-            />
-          ) : user?.role === 'RECRUITER' ? (
-            <RecruiterProfile
-              recruiter={user as Recruiter}
-              isEditing={isEditing}
-              saveUser={saveUser}
-              setIsEditing={setIsEditing}
-            />
-          ) : (
-            <div>Profil utilisateur non supporté</div>
-          )}
-  
-          {!isEditing && (
-          <Button className="mt-3 mx-auto block" onClick={() => setIsEditing(true)}>
-            Modifier le Profil
-          </Button>
-          )}
+    
+            {!isEditing && (
+            <Button className="mt-3 mx-auto block" onClick={() => setIsEditing(true)}>
+              Modifier le Profil
+            </Button>
+            )}
 
         </div>
       </div>
