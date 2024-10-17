@@ -9,7 +9,9 @@ public class CandidacyMapper {
     private static final ModelMapper modelMapper = new ModelMapper();
 
     public static CandidacyDto toDto(Candidacy candidacy) {
-        return modelMapper.map(candidacy, CandidacyDto.class);
+        CandidacyDto candidacyDto = modelMapper.map(candidacy, CandidacyDto.class);
+        candidacyDto.setOffer(OfferMapper.toDto(candidacy.getOffer()));
+        return candidacyDto;
     }
 
     public static Candidacy toEntity(CandidacyDto candidacyDto) {

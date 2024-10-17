@@ -23,10 +23,11 @@ public class UserService {
 
     public User saveUser(User user) {
         if (user instanceof Student student) {
-            student.setPassword(passwordEncoder.encode(student.getPassword()));
+            //student.setPassword(passwordEncoder.encode(student.getPassword()));
+            student.setPassword(student.getPassword());
             return userRepository.save(student);
         } else if (user instanceof Recruiter recruiter) {
-            recruiter.setPassword(passwordEncoder.encode(recruiter.getPassword()));
+            recruiter.setPassword(recruiter.getPassword());
             return userRepository.save(recruiter);
         } else {
             throw new IllegalArgumentException("Unknown user type");

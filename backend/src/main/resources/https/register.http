@@ -7,7 +7,7 @@ Content-Type: application/json
   "firstname": "Jane",
   "lastname": "Smith",
   "email": "jane.sth@eple.com",
-  "password": "securepassword",
+  "password": "password",
   "companyId": 1,
   "birthDate": "1985-08-15"
 }
@@ -34,8 +34,8 @@ POST http://localhost:8080/auth/authenticate
 Content-Type: application/json
 
 {
-  "email": "d.d@gml.com",
-  "password": "securepassword"
+  "email": "student1@example.com",
+  "password": "password"
 }
 
 
