@@ -43,6 +43,7 @@ public class UserService {
         existingUser.setFirstname(updatedUser.getFirstname());
         existingUser.setLastname(updatedUser.getLastname());
         existingUser.setDescription(updatedUser.getDescription());
+        existingUser.setPhoto(updatedUser.getPhoto());
 
         if (updatedUser instanceof Student updatedStudent) {
             Student existingStudent = (Student) existingUser;
