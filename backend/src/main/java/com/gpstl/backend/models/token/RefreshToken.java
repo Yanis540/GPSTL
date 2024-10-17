@@ -16,7 +16,7 @@ import java.time.Instant;
 @Entity
 public class RefreshToken {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
 
     @Column(unique = true)
