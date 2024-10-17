@@ -32,7 +32,7 @@ function Page() {
         const matchesSearch = candidacy.offer?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             candidacy.offer?.description?.toLowerCase().includes(searchTerm.toLowerCase());
 
-        const matchesStatus = statusFilter === "ALL" ? true : candidacy.status === statusFilter;
+        const matchesStatus = (statusFilter === "ALL" || statusFilter === "") ? true : candidacy.status === statusFilter;
 
         return matchesSearch && matchesStatus;
     });
