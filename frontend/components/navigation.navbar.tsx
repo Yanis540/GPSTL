@@ -30,7 +30,7 @@ const studentUrls = [
 ]
 const recruiterUrls = [
     {
-        href: "/dashboard",
+        href: "/recruiter",
         name: "Dashboard"
     },
 ];

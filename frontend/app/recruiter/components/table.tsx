@@ -5,7 +5,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { MoreHorizontal } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link'; // Importer Link de Next.js
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import React from 'react';
 
 interface TabHeaderProps {
@@ -34,8 +35,12 @@ function TabHeader({ }: TabHeaderProps) {
         </TableHeader>
     );
 };
-
-function TabRow({ }: TabHeaderProps) {
+interface TabRowProps {
+    offer : RecruiterOfferData
+}
+function TabRow({ offer }: TabRowProps) {
+    const router = useRouter();
+    const handleRedirect = ()=>router.push(`/recruiter/offers/${offer.id}`)
     return (
         <TableRow>
             <TableCell className="hidden sm:table-cell">

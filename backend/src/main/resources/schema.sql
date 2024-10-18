@@ -1,6 +1,6 @@
 create table if not exists company
 (
-    id    bigint       not null,
+    id    bigserial       not null,
     name  varchar(255) not null,
     siret varchar(255) not null,
     primary key (id),
@@ -10,7 +10,7 @@ create table if not exists company
 
 create table if not exists referential
 (
-    id    bigint       not null,
+    id    bigserial       not null,
     type  varchar(255) not null,
     value varchar(255) not null,
     primary key (id),
@@ -26,7 +26,7 @@ create table if not exists _user
     company_id                bigint,
     field_id                  bigint,
     grade_id                  bigint,
-    id                        bigint       not null,
+    id                        bigserial       not null,
     user_type                 varchar(31)  not null,
     email                     varchar(255),
     first_name                varchar(255),
@@ -61,7 +61,7 @@ create table if not exists ass_user_skill
 create table if not exists offer
 (
     salary           double precision not null,
-    id               bigint           not null,
+    id               bigserial           not null,
     publication_date timestamp(6)     not null,
     recruiter_id     bigint,
     description      varchar(255)     not null,
@@ -76,7 +76,7 @@ create table if not exists candidacy
 (
     date_of_candidacy timestamp(6) not null,
     date_of_response  timestamp(6),
-    id                bigint       not null,
+    id                bigserial       not null,
     offer_id          bigint,
     student_id        bigint,
     status            varchar(255) not null,
@@ -92,7 +92,7 @@ create table if not exists candidacy
 
 create table if not exists refresh_token
 (
-    id          integer                     not null,
+    id          bigserial                     not null,
     revoked     boolean                     not null,
     expiry_date timestamp(6) with time zone not null,
     user_id     bigint,

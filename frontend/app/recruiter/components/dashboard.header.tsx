@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 
 import { SidebarMobile } from './sidebar';
-import { File, ListFilter, PlusCircle, Search } from 'lucide-react';
+import { File, ListFilter, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 interface DashboardHeaderProps {
     children:ReactNode
@@ -42,11 +42,11 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import { Button } from '@/components/ui/button';
+import AddOffer from './AddOffer';
 interface TabCatgoriesHeaderProps {
-    newOffer : ()=>void
 };
 
-export function TabCatgoriesHeader({ newOffer}: TabCatgoriesHeaderProps) {
+export function TabCatgoriesHeader({ }: TabCatgoriesHeaderProps) {
     return (
         <div className="flex items-center">
             <TabsList>
@@ -83,12 +83,7 @@ export function TabCatgoriesHeader({ newOffer}: TabCatgoriesHeaderProps) {
                         Export
                     </span>
                 </Button>
-                <Button size="sm" className="h-8 gap-1" onClick={newOffer}>
-                    <PlusCircle className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                        Add an Offer
-                    </span>
-                </Button>
+                <AddOffer /> 
             </div>
         </div>
     );

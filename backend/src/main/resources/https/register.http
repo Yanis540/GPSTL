@@ -7,7 +7,7 @@ Content-Type: application/json
   "firstname": "Jane",
   "lastname": "Smith",
   "email": "jane.sth@eple.com",
-  "password": "securepassword",
+  "password": "password",
   "companyId": 1,
   "birthDate": "1985-08-15"
 }
@@ -34,8 +34,8 @@ POST http://localhost:8080/auth/authenticate
 Content-Type: application/json
 
 {
-  "email": "d.d@gml.com",
-  "password": "securepassword"
+  "email": "student1@example.com",
+  "password": "password"
 }
 
 
@@ -56,11 +56,34 @@ Content-Type: application/json
   "birthDate": "1985-08-15"
 }
 
+### Register a new recruiter (id = 3)
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "role": "RECRUITER",
+  "firstname": "Yanis",
+  "lastname": "Tabellout",
+  "email": "yanisr@gmail.com",
+  "password": "yanis",
+  "companyId": 1,
+  "birthDate": "1985-08-15"
+}
+
+
 ### Register a new student (id = 2)
 POST http://localhost:8080/auth/authenticate
 Content-Type: application/json
 
 {
   "email": "yanis@gmail.com",
+  "password": "yanis"
+}
+### Register a new student (id = 2)
+POST http://localhost:8080/auth/authenticate
+Content-Type: application/json
+
+{
+  "email": "yanisr@gmail.com",
   "password": "yanis"
 }

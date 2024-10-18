@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PutMapping("/student/{id}")
-    public ResponseEntity<?> updateStudent(@PathVariable Long id, @RequestBody StudentDto updatedUser) {
+    public ResponseEntity<StudentDto> updateStudent(@PathVariable Long id, @RequestBody StudentDto updatedUser) {
         try {
             User user = userService.updateUser(id, StudentMapper.toEntity(updatedUser));
             return ResponseEntity.ok(StudentMapper.toDto((Student) user));

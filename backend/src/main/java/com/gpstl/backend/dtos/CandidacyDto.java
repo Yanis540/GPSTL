@@ -17,6 +17,6 @@ public class CandidacyDto {
     private Date dateOfCandidacy;
     private Date dateOfResponse;
     private Long studentId;
-    private Long offerId;
+    private OfferDto offer;
 }
 
