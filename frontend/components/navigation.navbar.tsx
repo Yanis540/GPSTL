@@ -30,7 +30,7 @@ const studentUrls = [
 ]
 const recruiterUrls = [
     {
-        href: "/dashboard",
+        href: "/recruiter",
         name: "Dashboard"
     },
 ];
@@ -78,7 +78,7 @@ export function NavigationMobile({}:NavigationProps) {
       <SheetContent className="flex md:hidden">
         <div className="flex md:hidden flex-col items-start gap-y-4 ">
             {urls.map((url,i:number)=>(
-            <Link href={url.href} legacyBehavior passHref className="">
+            <Link key={i} href={url.href} legacyBehavior passHref className="">
                     {url.name}
              </Link>
             ))}

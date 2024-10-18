@@ -77,6 +77,13 @@ declare global {
         publicationDate: string;
         recruiterId: number
     }
+    type RecruiterOfferData = Offer& {
+        img : {
+            url : string 
+        }
+        status : string 
+        numberOfCandidates : number
+    }
 
     // Refresh_Token table
     interface RefreshToken {
