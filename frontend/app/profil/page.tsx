@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { useProfil } from './use-profil';
 import { StudentProfile } from './components/StudentProfile';
 import { RecruiterProfile } from './components/RecruiterProfile';
-import { Student, Recruiter } from './use-profil'; // Adjust the path to your types file
+import { UserProfile } from './components/UserProfile';
+import { Student, Recruiter, User } from './use-profil'; // Adjust the path to your types file
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -18,37 +19,7 @@ const Profile: React.FC = () => {
   }
 
   return (
-    
-
-// import { CircleUser, Menu, Package2, Search } from "lucide-react"
-
-// import { Button } from "@/components/ui/button"
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardFooter,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card"
-// import { Checkbox } from "@/components/ui/checkbox"
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu"
-// import { Input } from "@/components/ui/input"
-// import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-
-// export const description =
-//   "A settings page. The settings page has a sidebar navigation and a main content area. The main content area has a form to update the store name and a form to update the plugins directory. The sidebar navigation has links to general, security, integrations, support, organizations, and advanced settings."
-
-// export function Dashboard() {
-//   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen">
       <div className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10 ">
         <div className="mx-auto grid w-full max-w-6xl gap-2">
           <h1 className="text-3xl font-semibold">Settings</h1>
@@ -57,14 +28,14 @@ const Profile: React.FC = () => {
           <nav
             className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0"
           >
-            <Link href="#" className="font-semibold text-black">
+            <Link href="#" className="font-semibold ">
               General
             </Link>
-            <Link href="#" className="text-black ">Security</Link>
-            <Link href="#" className="text-black ">Integrations</Link>
-            <Link href="#" className="text-black ">Support</Link>
-            <Link href="#" className="text-black ">Organizations</Link>
-            <Link href="#" className="text-black ">Advanced</Link>
+            <Link href="#" className=" ">Security</Link>
+            <Link href="#" className=" ">Integrations</Link>
+            <Link href="#" className=" ">Support</Link>
+            <Link href="#" className=" ">Organizations</Link>
+            <Link href="#" className=" ">Advanced</Link>
           </nav>
         </div>
       </div>
@@ -79,13 +50,13 @@ const Profile: React.FC = () => {
     {/* <div className="flex items-center justify-center min-h-screen bg-gray-100"> */}
       <div className="space-y-6 w-full max-w-6xl p-6 rounded-lg shadow-md">
         <div>
-          <h3 className="text-lg font-medium text-black">Profil</h3>
+          <h3 className="text-lg font-medium ">Profil</h3>
         </div>
         <Separator />
         <div className="items-center w-full">
         <div className="flex  items-center space-x-6 w-full " style={{ padding: '20px' }}>
             {/* Affichage de la photo de l'utilisateur */}
-            <div className="w-40 h-48 rounded-md flex items-center justify-center ">
+            <div className="w-40 h-48 rounded-md flex items-center justify-center">
               {user?.photo ? (
                 <img 
                   src={user?.photo} 
@@ -96,32 +67,12 @@ const Profile: React.FC = () => {
                 <span className="text-gray-500">Photo</span>
               )}
             </div>
-
-            {user?.role === 'STUDENT' ? (
-              <div className="w-full h-48 flex flex-col justify-center space-y-2 p-4">
-                <h4 className="text-4xl font-semibold text-black">{user?.firstname} {user?.lastname}</h4>
-                <p className="text-gray-500">Contactez-moi : {user?.email}</p>
-                <p className="text-gray-500">Né(e) le {new Date(user?.birthdate).toLocaleDateString('fr-FR')}</p>
-                <p className="text-gray-500">Étudiant(e) à {user?.schoolName} en {user?.field?.value}</p>
-                <p className="text-gray-500">Niveau : {user?.grade?.value}</p>
-              </div>
-            ) : user?.role === 'RECRUITER' ? (
-              <div className="w-full h-48 border-2 border-green-500 flex flex-col justify-center space-y-2 p-4">
-                <h4 className="text-4xl font-semibold text-black">{user?.firstname} {user?.lastname}</h4>
-                <p className="text-gray-500">Contactez-moi : {user?.email}</p>
-                <p className="text-gray-500">Né(e) le {new Date(user?.birthdate).toLocaleDateString('fr-FR')}</p>
-              </div>
-            ) : null}
-            {/* <div className="w-full h-48 border-2 border-green-500 flex flex-col justify-center space-y-2 p-4">
-              <h4 className="text-4xl font-semibold text-black">{user?.firstname} {user?.lastname}</h4>
-              <p className="text-gray-500">Contactez-moi : {user?.email}</p>
-              <p className="text-gray-500">Né(e) le {new Date(user?.birthdate).toLocaleDateString('fr-FR')}</p>
-              {user?.role === 'STUDENT' && (
-                <p className="text-gray-500">Etudiant(e) à {user?.schoolName} en {user?.field?.value}</p>
-              )}
-              <p className="text-gray-500">Niveau : {user?.grade?.value}</p>
-            </div> */}
-          </div>
+            <UserProfile 
+              user={user}
+              isEditing={isEditing}
+              saveUser={saveUser}
+              setIsEditing={setIsEditing} />
+            </div>
             {/* Affichage du profil en fonction du type d'utilisateur */}
             {user?.role === 'STUDENT' ? (
               <StudentProfile
