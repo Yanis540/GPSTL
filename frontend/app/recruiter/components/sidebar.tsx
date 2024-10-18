@@ -60,7 +60,7 @@ const sideBarItems = [
   },
 ];export function Sidebar({}: SidebarProps) {
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex h-[calc(100vh-4rem)] mt-[4rem]">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         {sideBarItems.slice(0, sideBarItems.length-1).map((item, index) => (
           <Tooltip key={index}>

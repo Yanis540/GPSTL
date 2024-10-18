@@ -12,11 +12,15 @@ import { PlusCircle } from 'lucide-react';
 import { useAddOffer } from '../hooks/use-add-offer';
 
 interface AddOfferProps {
-
+  refresh : ()=>void
 };
 
-function AddOffer({ }: AddOfferProps) {
+function AddOffer({refresh }: AddOfferProps) {
   const [visible,setIsVisible] = useState<boolean>(false); 
+  const handleClose = ()=>{
+    refresh();
+    setIsVisible(false)
+  }
   return (
     <Dialog open={visible} onOpenChange={setIsVisible}>
       <DialogTrigger asChild>
@@ -31,7 +35,7 @@ function AddOffer({ }: AddOfferProps) {
         <DialogHeader>
           <DialogTitle>Offer</DialogTitle>
         </DialogHeader>
-        <AddOfferForm close={()=>setIsVisible(false)} />
+        <AddOfferForm close={handleClose} />
       </DialogContent>
     </Dialog>
 
