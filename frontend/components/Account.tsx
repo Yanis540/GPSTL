@@ -37,7 +37,9 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import { useAuth } from '@/context/store/use-auth';
-import { ThemeToggle } from './theme-provider';
+import { MoonSun,  } from './theme-provider';
+import Link from 'next/link';
+import { useTheme } from 'next-themes';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface AccountProps {
@@ -46,6 +48,9 @@ interface AccountProps {
 
 function Account({ }: AccountProps) {
     const {user,set_user} = useAuth();
+    const {setTheme,theme} = useTheme(); 
+    const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light")
+
     const handleLogout = ()=>set_user(undefined); 
     return (
         <DropdownMenu>
@@ -59,14 +64,16 @@ function Account({ }: AccountProps) {
                 <DropdownMenuLabel className='capitalize'>HI, {user?.firstName}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <User className="mr-2 h-4 w-4" />
-                        <span>Profile</span>
+                    <DropdownMenuItem >
+                        <Link href="/profil" className="flex flex-row items-center">
+                            <User className="mr-2 h-4 w-4" />
+                            <span>Profile</span>
+                        </Link>
                         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <ThemeToggle className="mr-2 h-4 w-4" />
-                        <span >Dark Mode </span>
+                    <DropdownMenuItem className='cursor-pointer flex flex-row items-center' onClick={toggleTheme}>
+                        <MoonSun className="mr-2 h-4 w-4 mb-2"/> 
+                        <span>Dark Mode </span>
                         <DropdownMenuShortcut>⇧⌘D</DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
@@ -134,7 +141,7 @@ function Account({ }: AccountProps) {
                     <span>API</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
+                <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
