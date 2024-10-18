@@ -72,11 +72,11 @@ function AuthWrapper({children}:AuthContextProps){
             router.push("/")
         }
     },[user?.id, pathname])
-    if(!user)
+    if(!user && pathname!="/")
         return null; 
-    if(user?.role != UserRole.RECRUITER && pathname.startsWith("/recruiter"))
+    if(user && user?.role != UserRole.RECRUITER && pathname.startsWith("/recruiter"))
         return null; 
-    if(user?.role != UserRole.STUDENT && pathname.startsWith("/student"))
+    if(user &&  user?.role != UserRole.STUDENT && pathname.startsWith("/student"))
         return null; 
     return (<>{children}</>)
 }
