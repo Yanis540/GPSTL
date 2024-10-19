@@ -44,9 +44,10 @@ import {
 import { Button } from '@/components/ui/button';
 import AddOffer from './AddOffer';
 interface TabCatgoriesHeaderProps {
+    refresh : ()=>void
 };
 
-export function TabCatgoriesHeader({ }: TabCatgoriesHeaderProps) {
+export function TabCatgoriesHeader({refresh }: TabCatgoriesHeaderProps) {
     return (
         <div className="flex items-center">
             <TabsList>
@@ -83,7 +84,7 @@ export function TabCatgoriesHeader({ }: TabCatgoriesHeaderProps) {
                         Export
                     </span>
                 </Button>
-                <AddOffer /> 
+                <AddOffer refresh={refresh} /> 
             </div>
         </div>
     );

@@ -34,7 +34,7 @@ const sideBarItems = [
     customClass: "group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base",
   },
   {
-    href: "#",
+    href: "/recruiter",
     label: "Dashboard",
     icon: <Home className="h-5 w-5" />,
     tooltip: "Dashboard",
@@ -47,7 +47,7 @@ const sideBarItems = [
     tooltip: "Colleagues",
   },
   {
-    href: "#",
+    href: "/recruiter/analytics",
     label: "Analytics",
     icon: <LineChart className="h-5 w-5" />,
     tooltip: "Analytics",
@@ -60,7 +60,7 @@ const sideBarItems = [
   },
 ];export function Sidebar({}: SidebarProps) {
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex h-[calc(100vh-4rem)] mt-[4rem]">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         {sideBarItems.slice(0, sideBarItems.length-1).map((item, index) => (
           <Tooltip key={index}>

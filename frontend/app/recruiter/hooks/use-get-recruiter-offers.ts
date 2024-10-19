@@ -20,7 +20,7 @@ export const useGetRecruiterOffers = ()=>{
         }
     }
     const {data,isLoading,error}:useGetRecruiterOffersQuery  = useQuery({
-        queryKey:["offer","all","recruiter","offers",user?.id], 
+        queryKey:["offer","all","recruiter","offers"], 
         queryFn:async()=>{
             const response = await axios.get(SERVER_URL+`/offer/all/recruiter/offers/${user?.id}`,config)
             const data = await response.data
@@ -28,7 +28,7 @@ export const useGetRecruiterOffers = ()=>{
         },
        
     }) 
-    const refresh = ()=>queryClient.invalidateQueries({queryKey:["offer","all","recruiter","offers",user?.id]}) 
+    const refresh = ()=> queryClient.refetchQueries({queryKey:["offer","all","recruiter","offers"]}) 
 
     return {
         data, 
