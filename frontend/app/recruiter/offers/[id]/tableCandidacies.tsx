@@ -7,12 +7,18 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from '@/components/ui/dialog';
 import * as RadioGroup from '@radix-ui/react-radio-group';
 
+import { mockCandidacies, Candidacy } from './mockCandidacies';
+
+const getCurrentDate = () => new Date().toISOString().split('T')[0];
+
 export function TabHeader({
                               selectAll,
-                              isAllSelected,
+                              selectedCandidates,
+                              candidacies,
                           }: {
     selectAll: (value: boolean) => void;
-    isAllSelected: boolean;
+    selectedCandidates: number[];
+    candidacies: Candidacy[];
 }) {
     return (
         <TableHeader>
@@ -20,8 +26,11 @@ export function TabHeader({
                 <TableHead className="w-[50px]">
                     <input
                         type="checkbox"
-                        checked={isAllSelected}
-                        onChange={(e) => selectAll(e.target.checked)}
+                        checked={selectedCandidates.length === candidacies.length}
+                        onChange={(e) => {
+                            const isChecked = e.target.checked;
+                            selectAll(isChecked);
+                        }}
                         className="cursor-pointer"
                     />
                 </TableHead>
@@ -38,80 +47,13 @@ export function TabHeader({
     );
 }
 
-interface Candidacy {
-    id: number;
-    studentName: string;
-    status: 'PENDING' | 'ACCEPTED' | 'REFUSED';
-    dateOfCandidacy: string;
-    dateOfResponse: string | null;
-    studentPhoto: string;
-    profileDetails: ProfileDetails;
-}
-
-interface ProfileDetails {
-    age: number;
-    grade: string;
-    email: string;
-    phone: string;
-    address: string;
-    skills: string[];
-    experience: string;
-    education: string;
-    linkedin: string;
-    photo: string;
-}
-
-// Mock Candidacy Data
-const mockCandidacies: Candidacy[] = [
-    {
-        id: 1,
-        studentName: 'Alice Martin',
-        status: 'PENDING',
-        dateOfCandidacy: '2024-01-15',
-        dateOfResponse: null,
-        studentPhoto: 'https://randomuser.me/api/portraits/women/1.jpg',
-        profileDetails: {
-            age: 23,
-            grade: 'Master\'s in Computer Science',
-            email: 'alice.martin@example.com',
-            phone: '+33 6 12 34 56 78',
-            address: '123 Rue de Paris, 75001 Paris, France',
-            skills: ['Java', 'Spring Boot', 'SQL', 'AWS'],
-            experience: '2 years of full-stack development experience at a fintech startup.',
-            education: "Master's in Computer Science, Sorbonne University, 2023",
-            linkedin: 'https://linkedin.com/in/alicemartin',
-            photo: 'https://randomuser.me/api/portraits/women/1.jpg',
-        },
-    },
-    {
-        id: 2,
-        studentName: 'John Doe',
-        status: 'ACCEPTED',
-        dateOfCandidacy: '2024-01-10',
-        dateOfResponse: '2024-01-20',
-        studentPhoto: 'https://randomuser.me/api/portraits/men/2.jpg',
-        profileDetails: {
-            age: 25,
-            grade: 'Bachelor\'s in Software Engineering',
-            email: 'john.doe@example.com',
-            phone: '+44 7 987 654 321',
-            address: '456 Oxford Street, London, UK',
-            skills: ['Python', 'Docker', 'Kubernetes', 'Linux'],
-            experience: '1 year as a DevOps Engineer at a cloud computing company.',
-            education: "Bachelor's in Software Engineering, University of London, 2022",
-            linkedin: 'https://linkedin.com/in/johndoe',
-            photo: 'https://randomuser.me/api/portraits/men/2.jpg',
-        },
-    },
-];
-
-
 export function TabRow({
                            selectedCandidates,
                            setSelectedCandidates,
                        }: {
     selectedCandidates: number[];
     setSelectedCandidates: React.Dispatch<React.SetStateAction<number[]>>;
+    candidacies: Candidacy[];
 }) {
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [openProfileDialog, setOpenProfileDialog] = useState(false);
@@ -129,7 +71,11 @@ export function TabRow({
             setCandidacies((prevCandidacies) =>
                 prevCandidacies.map((candidate) =>
                     candidate.id === currentCandidacy.id
-                        ? { ...candidate, status: selectedStatus }
+                        ? {
+                            ...candidate,
+                            status: selectedStatus,
+                            dateOfResponse: getCurrentDate(),
+                        }
                         : candidate
                 )
             );
@@ -141,7 +87,11 @@ export function TabRow({
         setCandidacies((prevCandidacies) =>
             prevCandidacies.map((candidate) =>
                 selectedCandidates.includes(candidate.id)
-                    ? { ...candidate, status: selectedStatus }
+                    ? {
+                        ...candidate,
+                        status: selectedStatus,
+                        dateOfResponse: getCurrentDate(),
+                    }
                     : candidate
             )
         );
@@ -212,7 +162,6 @@ export function TabRow({
                                 <DropdownMenuItem onClick={() => openEditDialogHandler(candidacy)}>
                                     Edit Decision
                                 </DropdownMenuItem>
-
                                 <DropdownMenuItem onClick={() => openProfileDialogHandler(candidacy)}>
                                     View Profile
                                 </DropdownMenuItem>
@@ -400,7 +349,6 @@ export function TabRow({
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-
         </>
     );
 }
