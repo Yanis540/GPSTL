@@ -9,9 +9,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import React from 'react';
 
-interface TabHeaderProps {
-
-};
+interface TabHeaderProps {};
 
 function TabHeader({ }: TabHeaderProps) {
     return (
@@ -35,54 +33,63 @@ function TabHeader({ }: TabHeaderProps) {
         </TableHeader>
     );
 };
+
 interface TabRowProps {
-    offer : RecruiterOfferData
+    offer: RecruiterOfferData;
 }
+
 function TabRow({ offer }: TabRowProps) {
     const router = useRouter();
-    const handleRedirect = ()=>router.push(`/recruiter/offers/${offer.id}`)
+
+    // Dynamic URL for the specific offer based on the offer ID
+    const offerLink = `/recruiter/offers/${offer.id}`;
+
     return (
         <TableRow>
-            <TableCell className="hidden sm:table-cell">
-                <Image
-                    alt="Product image"
-                    className="aspect-square rounded-md object-fit"
-                    height="48"
-                    src="https://companieslogo.com/img/orig/CAP.PA-9b4110b0.png?t=1720244491"
-                    width="48"
-                />
+            {/* Image now clickable */}
+            <TableCell className="hidden sm:table-cell cursor-pointer">
+                <Link href={offerLink}>
+                    <Image
+                        alt="Product image"
+                        className="aspect-square rounded-md object-fit"
+                        height="48"
+                        src="https://companieslogo.com/img/orig/CAP.PA-9b4110b0.png?t=1720244491"
+                        width="48"
+                    />
+                </Link>
             </TableCell>
-            <TableCell className="font-medium">
-                Full stack web developper
+
+            {/* Job title is now a clickable link */}
+            <TableCell className="font-bold cursor-pointer capitalize">
+                <Link href={offerLink}>
+                    {offer.name || "Full stack web developer"}
+                </Link>
             </TableCell>
+
             <TableCell>
-                <Badge variant="outline">Active</Badge>
+                <Badge variant="outline" className="capitalize">
+                    {offer.status || "Active"}
+                </Badge>
             </TableCell>
+
             <TableCell className="hidden md:table-cell">
-                25
+                {offer.numberOfCandidates || 25}
             </TableCell>
+
             <TableCell className="hidden md:table-cell">
-                2023-07-12 10:42 AM
+                {new Date(offer.publicationDate).toDateString() || "2023-07-12 10:42 AM"}
             </TableCell>
+
             <TableCell>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button
-                            aria-haspopup="true"
-                            size="icon"
-                            variant="ghost"
-                        >
+                        <Button aria-haspopup="true" size="icon" variant="ghost">
                             <MoreHorizontal className="h-4 w-4" />
                             <span className="sr-only">Toggle menu</span>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <Link href="/recruiter/offers">
-                            <DropdownMenuItem asChild>
-                                <span>Recruitment</span>
-                            </DropdownMenuItem>
-                        </Link>
                         <DropdownMenuItem>Edit</DropdownMenuItem>
                         <DropdownMenuItem>Close</DropdownMenuItem>
                         <DropdownMenuItem>Delete</DropdownMenuItem>
