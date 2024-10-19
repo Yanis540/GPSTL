@@ -4,15 +4,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Table, TableBody } from '@/components/ui/table';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { TabHeader, TabRow } from './tableCandidacies';
+import { mockCandidacies, Candidacy } from './mockCandidacies';
 
 export default function Dashboard() {
   const [selectedCandidates, setSelectedCandidates] = useState<number[]>([]);
 
-  const mockCandidateIds = [1, 2, 3];
-  const isAllSelected = selectedCandidates.length === mockCandidateIds.length;
-
+  const candidacies: Candidacy[] = mockCandidacies;
   const selectAllCandidates = (isSelected: boolean) => {
-    setSelectedCandidates(isSelected ? mockCandidateIds : []);
+    setSelectedCandidates(isSelected ? candidacies.map(c => c.id) : []);
   };
 
   return (
@@ -26,18 +25,23 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <Table>
-                  <TabHeader selectAll={selectAllCandidates} isAllSelected={isAllSelected} />
+                  <TabHeader
+                      selectAll={selectAllCandidates}
+                      selectedCandidates={selectedCandidates}
+                      candidacies={candidacies}
+                  />
                   <TableBody>
                     <TabRow
                         selectedCandidates={selectedCandidates}
                         setSelectedCandidates={setSelectedCandidates}
+                        candidacies={candidacies}
                     />
                   </TableBody>
                 </Table>
               </CardContent>
               <CardFooter>
                 <div className="text-xs text-muted-foreground">
-                  Showing <strong>1-3</strong> of <strong>3</strong> candidacies
+                  Showing <strong>1-{candidacies.length}</strong> of <strong>{candidacies.length}</strong> candidacies
                 </div>
               </CardFooter>
             </Card>
