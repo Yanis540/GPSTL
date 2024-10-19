@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useProfil } from './use-profil';
 import { StudentProfile } from './components/StudentProfile';
 import { RecruiterProfile } from './components/RecruiterProfile';
@@ -9,10 +9,19 @@ import { Student, Recruiter, User } from './use-profil'; // Adjust the path to y
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useAuth } from '@/context/store/use-auth';
 
 const Profile: React.FC = () => {
-  const { user, saveUser } = useProfil();
+  const { fullUser, setFullUser, saveUser } = useProfil();
+  const {user,set_user} = useAuth();
+  const updateUser = (data?:Partial<User>)=>{
+    set_user({...user,...data,tokens:user?.tokens}); 
+  } 
+  const updateFullUser = (data?:Partial<User>)=>{
+    setFullUser({...fullUser,...data,tokens:user?.tokens}); 
+  }
   const [isEditing, setIsEditing] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   if (!user) {
     return <div>Chargement...</div>;
@@ -40,13 +49,6 @@ const Profile: React.FC = () => {
         </div>
       </div>
  
-    
-    
-    
-    
-    
-    {/* Profile page */}
-    
     {/* <div className="flex items-center justify-center min-h-screen bg-gray-100"> */}
       <div className="space-y-6 w-full max-w-6xl p-6 rounded-lg shadow-md">
         <div>
@@ -68,25 +70,29 @@ const Profile: React.FC = () => {
               )}
             </div>
             <UserProfile 
-              user={user}
+              user={fullUser as User}
               isEditing={isEditing}
-              saveUser={saveUser}
-              setIsEditing={setIsEditing} />
+              updateUser={updateFullUser}
+              setIsEditing={setIsEditing}
+              isUpdating={isUpdating}
+              />
             </div>
             {/* Affichage du profil en fonction du type d'utilisateur */}
             {user?.role === 'STUDENT' ? (
               <StudentProfile
-                student={user as Student}
+                user={fullUser as Student}
                 isEditing={isEditing}
-                saveUser={saveUser}
+                updateUser={updateFullUser}
                 setIsEditing={setIsEditing}
+                saveUser={saveUser}
               />
             ) : user?.role === 'RECRUITER' ? (
               <RecruiterProfile
-                recruiter={user as Recruiter}
+                recruiter={fullUser as Recruiter}
                 isEditing={isEditing}
-                saveUser={saveUser}
+                updateUser={updateFullUser}
                 setIsEditing={setIsEditing}
+                saveUser={saveUser}
               />
             ) : (
               <div>Profil utilisateur non supporté</div>

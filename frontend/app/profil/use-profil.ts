@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { SERVER_URL } from "@/env";
+import { useAuth } from '@/context/store/use-auth';
 
 // Interface utilisateur
 export interface User {
@@ -32,7 +33,6 @@ export interface Student extends User {
 export interface Recruiter extends User {
   companyId: number;
 }
-
 
 // Fonction pour récupérer les informations de l'utilisateur via l'API
 const getUser = async (userId: number): Promise<User | Student | Recruiter | undefined> => {
@@ -74,29 +74,31 @@ const updateUser = async (userId: number, updatedUser: Partial<User>): Promise<U
 
 // Hook personnalisé pour gérer les informations du profil utilisateur
 export const useProfil = () => {
-  const [user, setUser] = useState<User | Student | Recruiter | undefined>(undefined);
+  const {user,set_user} = useAuth(); 
+  const [fullUser, setFullUser] = useState<User | Student | Recruiter | undefined>(undefined);
 
-  // Récupérer les informations utilisateur lors du chargement
+
   useEffect(() => {
-    const fetchUser = async () => {
-      const fetchedUser = await getUser(2); // Récupère l'utilisateur avec l'ID 1 (exemple)
-      setUser(fetchedUser);
-      console.log("usr recupere : " ,fetchedUser);
-    };
-    fetchUser();
+    if (user) {
+      const fetchUser = async () => {
+        const fetchedUser = await getUser(user.id);
+        setFullUser(fetchedUser);
+      };
+      fetchUser();
+    }
   }, []);
-
+ 
   // Sauvegarder les modifications de l'utilisateur
   const saveUser = async (updatedUser: Partial<User | Student | Recruiter>) => {
     if (user) {
       console.log("User avant mise à jour:", user);
       console.log("Données mises à jour:", updatedUser);
       
-      const savedUser = await updateUser(user.id, updatedUser);
+      const updated_user = await updateUser(user.id, updatedUser);
       
-      if (savedUser) {
-        setUser(savedUser);
-        console.log("User après mise à jour:", savedUser);
+      if (updated_user) {
+        set_user({...user,...updated_user,tokens:user?.tokens});
+        console.log("User après mise à jour:", updated_user);
 
       } else {
         console.error("Erreur lors de la mise à jour");
@@ -105,7 +107,7 @@ export const useProfil = () => {
   };
   
 
-  return { user, saveUser };
+  return { fullUser, setFullUser , saveUser };
 };
 
 
