@@ -37,7 +37,7 @@ function Page({ }: PageProps) {
 };
 
 function Dashboard() {
-  const {data} = useGetRecruiterOffers();
+  const {data,refresh} = useGetRecruiterOffers();
   console.log(data)
   // const offer  = {
   //   id : 1, 
@@ -73,7 +73,7 @@ function Dashboard() {
         </DashboardHeader>
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           <Tabs defaultValue="all">
-            <TabCatgoriesHeader  />
+            <TabCatgoriesHeader  refresh={refresh}/>
             <TabsContent value="all">
               <Card x-chunk="dashboard-06-chunk-0">
                 <CardHeader>
