@@ -9,15 +9,15 @@ interface CommentProps {
 
 const Comment: React.FC<CommentProps> = ({ comment }) => {
   return (
-    <div className="flex space-x-3 p-4">
+    <div className="flex flex-row items-start  p-4">
       <img 
         src={comment.avatarUrl} 
         // alt={comment.author} 
         alt='avatar'
-        className="w-20 h-20 rounded-full"
+        className="w-10 h-10 rounded-full"
       />
-      <div className="flex-1">
-        <div className="bg-background p-3 rounded-lg">
+      <div className="flex-1 px-3">
+        <div className="bg-background  rounded-lg">
           <div className="flex justify-between items-center">
             <h4 className="font-semibold text-foreground">{comment.author}</h4>
             <span className="text-sm text-gray-700 md:text-gray-500">{comment.time}</span>
@@ -28,7 +28,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
         </div>
         <div className="flex space-x-4 text-sm mt-2 text-gray-500">
           <button className="hover:text-blue-600">Like ({comment.likes})</button>
-          <button className="hover:text-blue-600">Respond ({comment.replies})</button>
+          <button className="hover:text-blue-600">Répondre ({comment.replies})</button>
         </div>
       </div>
     </div>
