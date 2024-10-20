@@ -1,9 +1,12 @@
 package com.gpstl.backend.mappers;
 
 import com.gpstl.backend.dtos.OfferDto;
+import com.gpstl.backend.dtos.RecruiterDto;
 import com.gpstl.backend.dtos.ReferentialDto;
 import com.gpstl.backend.models.Offer;
 import com.gpstl.backend.models.referential.Referential;
+import com.gpstl.backend.models.user.Recruiter;
+import com.gpstl.backend.models.user.User;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
@@ -14,11 +17,15 @@ public class OfferMapper {
     private static final ModelMapper modelMapper = new ModelMapper();
 
     public static OfferDto toDto(Offer offer) {
-        return modelMapper.map(offer, OfferDto.class);
+        OfferDto offerDto = modelMapper.map(offer, OfferDto.class);
+        offerDto.setRecruiter(UserMapper.toDto(offer.getRecruiter()));
+        return offerDto;
     }
 
     public static Offer toEntity(OfferDto offerDto) {
-        return modelMapper.map(offerDto, Offer.class);
+        Offer offer = modelMapper.map(offerDto, Offer.class);
+        offer.setRecruiter(RecruiterMapper.toEntity((RecruiterDto) offerDto.getRecruiter()));
+        return offer;
     }
 
     public static List<OfferDto> toDtoList(List<Offer> offers) {

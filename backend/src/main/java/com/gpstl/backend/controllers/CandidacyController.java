@@ -57,7 +57,13 @@ public class CandidacyController {
 
     @PostMapping
     public ResponseEntity<CandidacyDto> createCandidacy(@RequestBody CandidacyDto candidacyToCreate) {
+        Long id = UserContext.getUserId();
+
+        if (id == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
         try {
+            candidacyToCreate.setStudentId(id);
             Candidacy candidacy = candidacyService.createCandidacy(CandidacyMapper.toEntity(candidacyToCreate));
             return new ResponseEntity<>(CandidacyMapper.toDto(candidacy), HttpStatus.CREATED);
         } catch (Exception e) {

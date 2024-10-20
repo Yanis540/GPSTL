@@ -75,8 +75,9 @@ declare global {
         rhythm: string;
         description: string;
         publicationDate: string;
-        recruiterId: number
+        recruiter: User;
     }
+
     type RecruiterOfferData = Offer& {
         img : {
             url : string 

@@ -473,6 +473,91 @@ WHERE NOT EXISTS (
     WHERE name = 'Customer Success Manager'
 );
 
+INSERT INTO offer (
+    salary,
+    publication_date,
+    recruiter_id,
+    description,
+    name,
+    rhythm
+)
+SELECT
+    60000.00,  -- Salary
+    '2024-10-17 09:00:00',  -- Publication date
+    2,  -- recruiter_id
+    'Lead the development team',  -- Description
+    'Technical Lead',  -- Job name
+    'Full-time'  -- Rhythm
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM offer
+    WHERE name = 'Technical Lead'
+);
+
+INSERT INTO offer (
+    salary,
+    publication_date,
+    recruiter_id,
+    description,
+    name,
+    rhythm
+)
+SELECT
+    45000.00,  -- Salary
+    '2024-10-18 10:00:00',  -- Publication date
+    2,  -- recruiter_id
+    'Manage social media campaigns',  -- Description
+    'Social Media Manager',  -- Job name
+    'Part-time'  -- Rhythm
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM offer
+    WHERE name = 'Social Media Manager'
+);
+
+INSERT INTO offer (
+    salary,
+    publication_date,
+    recruiter_id,
+    description,
+    name,
+    rhythm
+)
+SELECT
+    75000.00,  -- Salary
+    '2024-10-19 11:00:00',  -- Publication date
+    2,  -- recruiter_id
+    'Develop marketing strategies',  -- Description
+    'Marketing Director',  -- Job name
+    'Full-time'  -- Rhythm
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM offer
+    WHERE name = 'Marketing Director'
+);
+
+INSERT INTO offer (
+    salary,
+    publication_date,
+    recruiter_id,
+    description,
+    name,
+    rhythm
+)
+SELECT
+    52000.00,  -- Salary
+    '2024-10-20 12:00:00',  -- Publication date
+    2,  -- recruiter_id
+    'Conduct data analysis and reporting',  -- Description
+    'Data Analyst',  -- Job name
+    'Full-time'  -- Rhythm
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM offer
+    WHERE name = 'Data Analyst'
+);
+
+
 -- Insert first candidacy (Student Alice Smith applies to the Software Engineer offer)
 INSERT INTO candidacy (
     date_of_candidacy,

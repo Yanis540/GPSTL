@@ -20,13 +20,12 @@ Content-Type: application/json
 
 ###
 POST http://localhost:8080/offer
-Authorization :"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5YW5pc3JAZ21haWwuY29tIiwiaWF0IjoxNzI5MjA0MDQxLCJleHAiOjE3MzA1MDAwNDF9.fG-Gthq5E1htnfjB9-HXiQz8RtkGzz8DSYvkj1NEVNk"
-
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5YW5pc3JAZ21haWwuY29tIiwiaWF0IjoxNzI5MjA0MDQxLCJleHAiOjE3MzA1MDAwNDF9.fG-Gthq5E1htnfjB9-HXiQz8RtkGzz8DSYvkj1NEVNk
 
 {
   "description": "motivated enough",
   "name": "full stack web dev",
   "publicationDate": "2024-10-17T22:12:53.292+00:00",
-  "rhythm": "1 day/ 4days",
+  "rhythm": "1 day/ 4days"
 }

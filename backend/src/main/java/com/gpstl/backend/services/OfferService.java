@@ -1,7 +1,11 @@
 package com.gpstl.backend.services;
 
+import com.gpstl.backend.exception.UserNotFoundException;
 import com.gpstl.backend.models.Offer;
+import com.gpstl.backend.models.candidacy.Candidacy;
 import com.gpstl.backend.models.user.Recruiter;
+import com.gpstl.backend.models.user.Student;
+import com.gpstl.backend.repositories.CandidacyRepository;
 import com.gpstl.backend.repositories.OfferRepository;
 import com.gpstl.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +22,7 @@ public class OfferService {
 
     private final OfferRepository offerRepository;
     private final UserRepository userRepository;
+    private final CandidacyRepository candidacyRepository;
 
     public Offer createOffer(Offer offer) {
         Offer offerToCreate = new Offer();
@@ -48,4 +54,21 @@ public class OfferService {
         List<Offer> offers = offerRepository.findByRecruiterId(recuiterId);
         return offers;
     }
+
+    public List<Offer> getAvailableOffers(Long studentId) {
+        Student student = (Student) userRepository.findById(studentId).orElseThrow(() -> new UserNotFoundException("Not found"));
+        List<Offer> ignoredOffers = student.getIgnoredOffers();
+        List<Candidacy> candidacies = candidacyRepository.findCandidaciesByStudentId(studentId);
+
+        List<Long> candidacyOfferIds = candidacies.stream()
+                .map(candidacy -> candidacy.getOffer().getId())
+                .toList();
+
+        List<Offer> allOffers = offerRepository.findAll();
+
+        return allOffers.stream()
+                .filter(offer -> !ignoredOffers.contains(offer) && !candidacyOfferIds.contains(offer.getId()))
+                .toList();
+    }
 }
+

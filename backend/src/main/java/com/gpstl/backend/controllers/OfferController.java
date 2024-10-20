@@ -3,7 +3,10 @@ package com.gpstl.backend.controllers;
 import com.gpstl.backend.contexts.UserContext;
 import com.gpstl.backend.dtos.OfferDto;
 import com.gpstl.backend.mappers.OfferMapper;
+import com.gpstl.backend.mappers.RecruiterMapper;
+import com.gpstl.backend.mappers.UserMapper;
 import com.gpstl.backend.models.Offer;
+import com.gpstl.backend.models.user.Recruiter;
 import com.gpstl.backend.models.user.Role;
 import com.gpstl.backend.models.user.User;
 import com.gpstl.backend.services.OfferService;
@@ -37,6 +40,22 @@ public class OfferController {
         return ResponseEntity.ok(offers);
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<List<OfferDto>> getAvailableOffers() {
+        Long studentId = UserContext.getUserId();
+
+        if (studentId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        List<OfferDto> availableOffers = offerService.
+                getAvailableOffers(studentId)
+                .stream()
+                .map(OfferMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(availableOffers);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<OfferDto> getOfferById(@PathVariable Long id) {
         Optional<Offer> offer = offerService.getOfferById(id);
@@ -52,11 +71,11 @@ public class OfferController {
             if (id == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }
-            User user = userService.getUser(id); 
+            User user = userService.getUser(id);
             if(user.getRole() == Role.STUDENT)
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             System.out.println(">>>>>>>>>>"+offerToCreate);
-            offerToCreate.setRecruiterId(id);
+            offerToCreate.setRecruiter(UserMapper.toDto(user));
             Offer offer = offerService.createOffer(OfferMapper.toEntity(offerToCreate));
             return new ResponseEntity<>(OfferMapper.toDto(offer), HttpStatus.CREATED);
         } catch (Exception e) {

@@ -1,11 +1,15 @@
 package com.gpstl.backend.services;
 
+import com.gpstl.backend.exception.UserNotFoundException;
+import com.gpstl.backend.models.Offer;
 import com.gpstl.backend.models.referential.Referential;
 import com.gpstl.backend.models.user.Recruiter;
 import com.gpstl.backend.models.user.Student;
 import com.gpstl.backend.models.user.User;
+import com.gpstl.backend.repositories.OfferRepository;
 import com.gpstl.backend.repositories.ReferentialRepository;
 import com.gpstl.backend.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ReferentialRepository referentialRepository;
+    private final OfferRepository offerRepository;
     private final PasswordEncoder passwordEncoder;
 
     public User saveUser(User user) {
@@ -69,6 +74,16 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
 
         return user;
+    }
+
+    public void swapOffer(Long studentId, Long offerId) {
+        Student student = (Student) userRepository.findById(studentId)
+                .orElseThrow(() -> new UserNotFoundException("Student not found"));
+        Offer offer = offerRepository.findById(offerId)
+                .orElseThrow(() -> new EntityNotFoundException("Offer not found"));
+
+        student.getIgnoredOffers().add(offer);
+        userRepository.save(student);
     }
 
 }
