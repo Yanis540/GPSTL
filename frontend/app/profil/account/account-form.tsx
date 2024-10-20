@@ -33,6 +33,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useAuth } from "@/context/store/use-auth"
 
 const languages = [
   { label: "English", value: "en" },
@@ -47,15 +49,9 @@ const languages = [
 ] as const
 
 const accountFormSchema = z.object({
-  name: z
-    .string()
-    .min(2, {
-      message: "Name must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Name must not be longer than 30 characters.",
-    }),
-  dob: z.date({
+  photo : z.string().url().optional(),
+
+  birthDate: z.date({
     required_error: "A date of birth is required.",
   }),
   language: z.string({
@@ -72,6 +68,7 @@ const defaultValues: Partial<AccountFormValues> = {
 }
 
 export function AccountForm() {
+  const {user} = useAuth();
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
@@ -91,14 +88,18 @@ export function AccountForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <Avatar className="cursor-pointer">
+          <AvatarImage src={!!user?.photo? (user?.photo):"https://github.com/shadcn.png"} alt="@shadcn" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
         <FormField
           control={form.control}
-          name="name"
+          name="photo"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Photo URL</FormLabel>
               <FormControl>
-                <Input placeholder="Your name" {...field} />
+                <Input placeholder="url" {...field} />
               </FormControl>
               <FormDescription>
                 This is the name that will be displayed on your profile and in
@@ -110,7 +111,7 @@ export function AccountForm() {
         />
         <FormField
           control={form.control}
-          name="dob"
+          name="birthDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Date of birth</FormLabel>
