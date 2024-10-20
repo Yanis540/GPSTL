@@ -8,6 +8,7 @@ import {
   import {
     TooltipProvider,
   } from "@/components/ui/tooltip"
+  import { Toaster } from "@/components/ui/toaster"
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface ContextProps {
     children: ReactNode | ReactNode[] | undefined
@@ -28,6 +29,7 @@ function Context({children}:ContextProps) {
                 {children}
             </TooltipProvider>
         </ThemeProvider>
+        <Toaster /> 
     </QueryClientProvider>
     );
 };

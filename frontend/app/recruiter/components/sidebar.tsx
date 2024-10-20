@@ -7,6 +7,7 @@ import {
     PanelLeft,
     Settings,
     Users2,
+    Calendar
   } from "lucide-react"
   
   import {
@@ -45,6 +46,12 @@ const sideBarItems = [
     label: "Colleagues",
     icon: <Users2 className="h-5 w-5" />,
     tooltip: "Colleagues",
+  },
+  {
+    href: "/recruiter/calendar",
+    label: "Calendar",
+    icon: <Calendar className="h-5 w-5" />,
+    tooltip: "Calendar",
   },
   {
     href: "/recruiter/analytics",
