@@ -50,7 +50,7 @@ export const Swipe: React.FC<OfferProps> = ({offers}) => {
             const updateCurrentIndex = (currentIndex + 1) % updatedOffers.length;
             setCurrentIndex(updateCurrentIndex);
         } else {
-            return <div>Aucune offre disponible</div>;
+            setCurrentIndex(0);
         }
     };
 
@@ -101,11 +101,11 @@ export const Swipe: React.FC<OfferProps> = ({offers}) => {
                                             </div>
                                             <div className="w-full mb-4">
                                                 <h4 className="font-semibold mb-1">Formation :</h4>
-                                                <p>Bac+5 in Finance or related field</p>
+                                                <p>Bac+5 in Computer Science</p>
                                             </div>
                                             <div className="w-full mb-4">
                                                 <h4 className="font-semibold mb-1">Expérience :</h4>
-                                                <p>2+ years in financial analysis</p>
+                                                <p>2+ years</p>
                                             </div>
                                             <div className="w-full">
                                                 <h4 className="font-semibold mb-1">Localisation :</h4>
