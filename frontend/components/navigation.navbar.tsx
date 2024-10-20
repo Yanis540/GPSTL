@@ -27,6 +27,10 @@ const studentUrls = [
         href: "/candidacy",
         name: "Candidacy"
     },
+    {
+        href: "/publications",
+        name: "Publications"
+    },
 ]
 const recruiterUrls = [
     {
