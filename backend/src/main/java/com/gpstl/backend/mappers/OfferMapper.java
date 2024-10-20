@@ -2,11 +2,7 @@ package com.gpstl.backend.mappers;
 
 import com.gpstl.backend.dtos.OfferDto;
 import com.gpstl.backend.dtos.RecruiterDto;
-import com.gpstl.backend.dtos.ReferentialDto;
 import com.gpstl.backend.models.Offer;
-import com.gpstl.backend.models.referential.Referential;
-import com.gpstl.backend.models.user.Recruiter;
-import com.gpstl.backend.models.user.User;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
