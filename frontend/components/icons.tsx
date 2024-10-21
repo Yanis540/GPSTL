@@ -352,6 +352,60 @@ export const Icons = {
       />
     </svg>
   ),
+  quart: (props: IconProps) => (
+    <svg
+      {...props}
+      width="30"
+      height="30"
+      viewBox="0 0 38 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g filter="url(#filter0_d_2001_4303)">
+        <path
+          d="M8.23334 20.0398V14.5716C8.23334 12.9577 8.53713 11.2584 9.1447 9.47364C9.75228 7.68888 10.5972 5.98008 11.6794 4.34722C12.7617 2.71436 14.0338 1.31883 15.4958 0.160645L19.7108 3.17953C18.5526 4.86935 17.5653 6.63512 16.7489 8.47683C15.9325 10.3185 15.5242 12.3217 15.5242 14.4861V20.0398H8.23334ZM22.7582 20.0398V14.5716C22.7582 12.9577 23.062 11.2584 23.6696 9.47364C24.2771 7.68888 25.122 5.98008 26.2043 4.34722C27.2865 2.71436 28.5586 1.31883 30.0206 0.160645L34.2357 3.17953C33.0775 4.86935 32.0902 6.63512 31.2738 8.47683C30.4573 10.3185 30.0491 12.3217 30.0491 14.4861V20.0398H22.7582Z"
+          fill="#32BA6F"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_2001_4303"
+          x="0.213336"
+          y="0.160645"
+          width="37.4595"
+          height="31.3361"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset dx="-2.29143" dy="5.72857" />
+          <feGaussianBlur stdDeviation="2.86429" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_2001_4303"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_2001_4303"
+            result="shape"
+          />
+        </filter>
+      </defs>
+    </svg>
+  ),
   spinner: ({ className, ...props }: IconProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

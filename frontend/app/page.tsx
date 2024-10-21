@@ -1,6 +1,7 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper"
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Hero from "./components/Hero";
 
 export default function Home() {
   const companies = [
@@ -24,9 +25,10 @@ export default function Home() {
     }, 
   ]
   return (
-    <div className="flex-1 flex flex-col h-full items-center">
-      <MaxWidthWrapper className="h-[calc(100vh-4rem)]  flex flex-col items-center ">
-        {/* Hero Section */}
+    <div className="flex-1 flex flex-col h-full items-center p-8">
+  
+      <Hero />
+    <MaxWidthWrapper className="h-[calc(100vh-4rem)]  flex flex-col items-center ">
         <section className="flex-1 w-full py-20 flex flex-col items-center justify-center gap-y-4 md:gap-y-6 ">
           <h1 className="text-4xl md:text-6xl font-bold text-center text-foreground ">
             Find Your Ideal <span className="text-primary">Internship / Apprenticeship</span> Today
@@ -39,7 +41,6 @@ export default function Home() {
           </Button>
         </section>
 
-        {/* Cards Section */}
         <section className="flex-[0.75] flex flex-col items-center justify-center gap-y-8 md:gap-y-8  ">
           
           <div className="flex flex-row items-center justify-center gap-x-4 md:gap-x-10">
