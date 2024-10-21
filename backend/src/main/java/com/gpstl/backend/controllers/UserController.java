@@ -1,5 +1,6 @@
 package com.gpstl.backend.controllers;
 
+import com.gpstl.backend.contexts.UserContext;
 import com.gpstl.backend.dtos.RecruiterDto;
 import com.gpstl.backend.dtos.StudentDto;
 import com.gpstl.backend.mappers.RecruiterMapper;
@@ -9,6 +10,7 @@ import com.gpstl.backend.models.user.Student;
 import com.gpstl.backend.models.user.User;
 import com.gpstl.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +40,17 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/ignored/{offerId}")
+    public ResponseEntity<?> swapOffer(@PathVariable Long offerId) {
+        Long studentId = UserContext.getUserId();
+
+        if (studentId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        userService.swapOffer(studentId, offerId);
+        return ResponseEntity.ok("Offer swapped successfully");
     }
 
 }

@@ -11,6 +11,6 @@ Content-Type: application/json
 
 ### Get candidacies by student (id = 2)
 GET http://localhost:8080/candidacy/student
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkLmRAZ21sLmNvbSIsImlhdCI6MTcyOTA5NjQ2OCwiZXhwIjoxNzMwMzkyNDY4fQ.75bgh6HUAe9occBlfYKJalr4fo-5lkrwD8bBgEbiwGM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHVkZW50MUBleGFtcGxlLmNvbSIsImlhdCI6MTcyOTQ1MDQyNywiZXhwIjoxNzMwNzQ2NDI3fQ.V2VE9eHTtFi0ORY8uagMMOOw6P7Cx9GHB0BRti_NCjo
 Content-Type: application/json
 
