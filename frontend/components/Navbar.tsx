@@ -8,6 +8,7 @@ import Account from './Account';
 import { useAuth } from '@/context/store/use-auth';
 
 import {Navigation, NavigationMobile} from './navigation.navbar';
+import { usePathname } from 'next/navigation';
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface NavbarProps {
 
@@ -15,9 +16,9 @@ interface NavbarProps {
 
 function Navbar({ }: NavbarProps) {
     const { user } = useAuth();
-    
+    const pathname = usePathname();
     return (
-        <div className=" sticky z-50 top-0  inset-x-0 h-16 bg-background ">
+        <div className={cn("  z-50 top-0  inset-x-0 h-16 bg-background ",pathname!="/"&&"sticky")}>
             <header className={cn('relative flex flex-row items-center justify-between  h-full px-2 sm:px-16 md:px-8  transition-all duration-500 border-b-[1px] dark:border-primary py-2 mx-auto max-w-[1500px]',)}>
                 <Link href="/" className="relative h-16 w-16">
                     <Image src="/assets/logo.png" fill className="w-full h-full" alt="logo" />
