@@ -225,7 +225,7 @@ SELECT
     'password',  -- Example password
     'RECRUITER',  -- Role
     NULL,  -- school_name can be NULL
-    NULL  -- photo can be NULL
+    'https://companieslogo.com/img/orig/CAP.PA-9b4110b0.png?t=1720244491'  -- photo can be NULL
 WHERE NOT EXISTS (
     SELECT 1
     FROM _user
@@ -260,7 +260,7 @@ SELECT
     'password',  -- Example password
     'RECRUITER',  -- Role
     NULL,  -- school_name can be NULL
-    NULL  -- photo can be NULL
+    'https://logo-marque.com/wp-content/uploads/2021/03/Societe-Generale-Logo.png'  -- photo can be NULL
 WHERE NOT EXISTS (
     SELECT 1
     FROM _user

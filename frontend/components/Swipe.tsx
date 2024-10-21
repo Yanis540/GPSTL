@@ -28,12 +28,10 @@ export const Swipe: React.FC<OfferProps> = ({offers}) => {
     const { user } = useAuth();
     const token = user?.tokens?.access.token;
 
-    if (!token) {
-        throw new Error('Token not found');
-    }
-
-    const { ignoredOffer } = useIgnoredOffer(token);  // Hook pour ignorer l'offre
-    const { addCandidacy } = useAddCandidacy(token);  // Hook pour ajouter une candidature
+    // @ts-ignore
+    const { ignoredOffer } = useIgnoredOffer(token);
+    // @ts-ignore
+    const { addCandidacy } = useAddCandidacy(token);
 
     const handleSwipe = (direction: string) => {
         const currentOffer = currentOffers[currentIndex];
@@ -86,13 +84,12 @@ export const Swipe: React.FC<OfferProps> = ({offers}) => {
                                         <CardContent className="p-6 flex flex-col items-center">
                                             <div className="w-32 h-32 relative mb-4">
                                                 <Image
-                                                    src={"/entreprise_logo/TechCorp.png"}
+                                                    src={!offer.recruiter.photo ? "" : offer.recruiter.photo}
                                                     alt={`TechCorp.png logo`}
                                                     fill
                                                     style={{ objectFit: 'contain' }}
                                                 />
                                             </div>
-                                            <h2 className="text-xl font-bold text-center mb-2">Capgemini</h2>
                                             <h3 className="text-lg font-semibold text-center mb-2">{offer.name}</h3>
                                             <p className="text-center mb-4">{offer.description}</p>
                                             <div className="w-full mb-4">
@@ -102,10 +99,6 @@ export const Swipe: React.FC<OfferProps> = ({offers}) => {
                                             <div className="w-full mb-4">
                                                 <h4 className="font-semibold mb-1">Formation :</h4>
                                                 <p>Bac+5 in Computer Science</p>
-                                            </div>
-                                            <div className="w-full mb-4">
-                                                <h4 className="font-semibold mb-1">Expérience :</h4>
-                                                <p>2+ years</p>
                                             </div>
                                             <div className="w-full">
                                                 <h4 className="font-semibold mb-1">Localisation :</h4>

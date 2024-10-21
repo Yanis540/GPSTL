@@ -9,10 +9,6 @@ function Page() {
     const { user } = useAuth();
     const token = user?.tokens?.access.token;
 
-    if (!token) {
-        throw new Error('Token not found');
-    }
-
     const { offers, isLoading, error } = useAllOffers(token);
 
     if (isLoading) {

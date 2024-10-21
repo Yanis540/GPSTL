@@ -11,10 +11,6 @@ function Page() {
     const { user } = useAuth();
     const token = user?.tokens?.access.token;
 
-    if (!token) {
-        throw new Error('Token not found');
-    }
-
     const { candidacies, isLoading, error } = useCandidacies(token);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
