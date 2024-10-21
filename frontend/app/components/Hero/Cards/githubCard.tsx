@@ -22,17 +22,17 @@ const avatars = [av10, av7, av5, av1, av3, av6, av8, av9, av11, av4, av2];
 function githubCard() {
   return (
     <div className=" flex flex-col gap-[16px]">
-      <Link href="https://github.com/MicroClub-USTHB">
+      <Link href="https://github.com/Yanis540/GPSTL">
         <div className="flex bg-black items-center rounded-[22px] px-6 py-5  pointer-events-none ">
           <Image
             width={400}
             height={400}
             alt=""
             className="size-12 rounded-xl"
-            src="/microClub.png"
+            src="/assets/logo.png"
           />
           <h2 className="ml-5 font-bold text-[22px] text-[#C9D1D9] ">
-            Micro Club
+            Les Chats Verts
           </h2>
         </div>
       </Link>
@@ -71,7 +71,7 @@ function githubCard() {
       <div className="bg-black  rounded-[22px] px-4 py-4 h-40 ">
         {/* <Image alt='' className='w-full'  src={cont}/> */}
         <GitHubCalendar
-          username="MoussaabBadla"
+          username="Yanis540"
           blockSize={8}
           blockMargin={3}
           showWeekdayLabels={false}
