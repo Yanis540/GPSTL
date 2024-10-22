@@ -1,4 +1,3 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { TableCell, TableRow, TableHeader, TableHead } from '@/components/ui/table';
@@ -7,7 +6,44 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from '@/components/ui/dialog';
 import * as RadioGroup from '@radix-ui/react-radio-group';
 
-import { mockCandidacies, Candidacy } from './mockCandidacies';
+import { mockCandidacies, Candidacy } from '../data/mockCandidacies';
+
+import {
+    CheckCircledIcon,
+    CrossCircledIcon,
+    StopwatchIcon,
+} from "@radix-ui/react-icons";
+import {Chat} from "@/app/recruiter/offers/[id]/components/Chat";
+
+function getStatusDetails(status: string) {
+    switch (status) {
+        case "PENDING":
+            return {
+                icon: StopwatchIcon,
+                color: "text-yellow-500",
+                label: "Pending",
+            };
+        case "ACCEPTED":
+            return {
+                icon: CheckCircledIcon,
+                color: "text-green-500",
+                label: "Accepted",
+            };
+        case "REFUSED":
+            return {
+                icon: CrossCircledIcon,
+                color: "text-red-500",
+                label: "Refused",
+            };
+        default:
+            return {
+                icon: StopwatchIcon,
+                color: "text-gray-500",
+                label: "Unknown",
+            };
+    }
+}
+
 
 const getCurrentDate = () => new Date().toISOString().split('T')[0];
 
@@ -57,8 +93,12 @@ export function TabRow({
 }) {
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [openProfileDialog, setOpenProfileDialog] = useState(false);
-    const [selectedStatus, setSelectedStatus] = useState<'PENDING' | 'ACCEPTED' | 'REFUSED'>('PENDING');
-    const [currentCandidacy, setCurrentCandidacy] = useState<Candidacy | null>(null);
+    const [selectedStatus, setSelectedStatus] = useState<
+        "PENDING" | "ACCEPTED" | "REFUSED"
+    >("PENDING");
+    const [currentCandidacy, setCurrentCandidacy] = useState<Candidacy | null>(
+        null
+    );
     const [openBulkEditDialog, setOpenBulkEditDialog] = useState(false);
     const [candidacies, setCandidacies] = useState<Candidacy[]>(mockCandidacies);
 
@@ -110,6 +150,14 @@ export function TabRow({
         setOpenProfileDialog(true);
     };
 
+    const [openChatDialog, setOpenChatDialog] = useState(false);
+
+    const openChatDialogHandler = (candidacy: Candidacy) => {
+        setCurrentCandidacy(candidacy);
+        setOpenChatDialog(true);
+    };
+
+
     const toggleCandidateSelection = (id: number) => {
         setSelectedCandidates((prevSelected) =>
             prevSelected.includes(id)
@@ -124,52 +172,61 @@ export function TabRow({
                 Change Status for Selected
             </Button>
 
-            {candidacies.map((candidacy) => (
-                <TableRow key={candidacy.id}>
-                    <TableCell className="w-[50px]">
-                        <input
-                            type="checkbox"
-                            checked={selectedCandidates.includes(candidacy.id)}
-                            onChange={() => toggleCandidateSelection(candidacy.id)}
-                            className="cursor-pointer"
-                        />
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                        <img
-                            alt="Student photo"
-                            className="aspect-square rounded-md object-cover"
-                            height="48"
-                            width="48"
-                            src={candidacy.studentPhoto}
-                        />
-                    </TableCell>
-                    <TableCell className="font-medium">{candidacy.studentName}</TableCell>
-                    <TableCell>
-                        <Badge variant={getBadgeVariant(candidacy.status)}>{candidacy.status}</Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">{candidacy.dateOfCandidacy}</TableCell>
-                    <TableCell className="hidden md:table-cell">{candidacy.dateOfResponse || 'N/A'}</TableCell>
-                    <TableCell>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button aria-haspopup="true" size="icon" variant="ghost">
-                                    <MoreHorizontal className="h-4 w-4" />
-                                    <span className="sr-only">Toggle menu</span>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem onClick={() => openEditDialogHandler(candidacy)}>
-                                    Edit Decision
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => openProfileDialogHandler(candidacy)}>
-                                    View Profile
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </TableCell>
-                </TableRow>
-            ))}
+            {candidacies.map((candidacy) => {
+                const { icon: StatusIcon, color, label } = getStatusDetails(candidacy.status);
+                return (
+                    <TableRow key={candidacy.id} className="hover:bg-green-950 transition duration-150">
+                        <TableCell className="w-[50px]">
+                            <input
+                                type="checkbox"
+                                checked={selectedCandidates.includes(candidacy.id)}
+                                onChange={() => toggleCandidateSelection(candidacy.id)}
+                                className="cursor-pointer"
+                            />
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                            <img
+                                alt="Student photo"
+                                className="aspect-square rounded-md object-cover"
+                                height="48"
+                                width="48"
+                                src={candidacy.studentPhoto}
+                            />
+                        </TableCell>
+                        <TableCell className="font-medium">{candidacy.studentName}</TableCell>
+                        <TableCell>
+              <span className={`flex items-center space-x-1 ${color}`}>
+                <StatusIcon className="w-4 h-4" />
+                <span>{label}</span>
+              </span>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">{candidacy.dateOfCandidacy}</TableCell>
+                        <TableCell className="hidden md:table-cell">{candidacy.dateOfResponse || "N/A"}</TableCell>
+                        <TableCell>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button aria-haspopup="true" size="icon" variant="ghost">
+                                        <MoreHorizontal className="h-4 w-4" />
+                                        <span className="sr-only">Toggle menu</span>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                    <DropdownMenuItem onClick={() => openEditDialogHandler(candidacy)}>
+                                        Edit Decision
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => openProfileDialogHandler(candidacy)}>
+                                        View Profile
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => openChatDialogHandler(candidacy)}>
+                                        Chat
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </TableCell>
+                    </TableRow>
+                );
+            })}
 
             {/* Edit Dialog */}
             <Dialog open={openEditDialog} onOpenChange={setOpenEditDialog}>
@@ -189,9 +246,11 @@ export function TabRow({
                                     <RadioGroup.Item
                                         value="PENDING"
                                         id="pending-edit"
-                                        className="w-4 h-4 rounded-full border border-gray-400"
+                                        className="relative w-4 h-4 rounded-full border border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400"
                                     >
-                                        <div className={`w-full h-full ${selectedStatus === 'PENDING' ? 'bg-yellow-400' : ''}`} />
+                                        {selectedStatus === 'PENDING' && (
+                                            <div className="absolute inset-0 w-2 h-2 m-auto bg-yellow-400 rounded-full" />
+                                        )}
                                     </RadioGroup.Item>
                                     <label htmlFor="pending-edit">Pending</label>
                                 </div>
@@ -199,9 +258,11 @@ export function TabRow({
                                     <RadioGroup.Item
                                         value="ACCEPTED"
                                         id="accepted-edit"
-                                        className="w-4 h-4 rounded-full border border-gray-400"
+                                        className="relative w-4 h-4 rounded-full border border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-800"
                                     >
-                                        <div className={`w-full h-full ${selectedStatus === 'ACCEPTED' ? 'bg-green-800' : ''}`} />
+                                        {selectedStatus === 'ACCEPTED' && (
+                                            <div className="absolute inset-0 w-2 h-2 m-auto bg-green-800 rounded-full" />
+                                        )}
                                     </RadioGroup.Item>
                                     <label htmlFor="accepted-edit">Accepted</label>
                                 </div>
@@ -209,9 +270,11 @@ export function TabRow({
                                     <RadioGroup.Item
                                         value="REFUSED"
                                         id="refused-edit"
-                                        className="w-4 h-4 rounded-full border border-gray-400"
+                                        className="relative w-4 h-4 rounded-full border border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-800"
                                     >
-                                        <div className={`w-full h-full ${selectedStatus === 'REFUSED' ? 'bg-red-800' : ''}`} />
+                                        {selectedStatus === 'REFUSED' && (
+                                            <div className="absolute inset-0 w-2 h-2 m-auto bg-red-800 rounded-full" />
+                                        )}
                                     </RadioGroup.Item>
                                     <label htmlFor="refused-edit">Refused</label>
                                 </div>
@@ -229,7 +292,7 @@ export function TabRow({
                 </DialogContent>
             </Dialog>
 
-            {/* Bulk Edit Status Dialog */}
+            {/* Status Dialog */}
             <Dialog open={openBulkEditDialog} onOpenChange={setOpenBulkEditDialog}>
                 <DialogContent>
                     <DialogHeader>
@@ -246,9 +309,11 @@ export function TabRow({
                                 <RadioGroup.Item
                                     value="PENDING"
                                     id="pending-bulk"
-                                    className="w-4 h-4 rounded-full border border-gray-400"
+                                    className="relative w-4 h-4 rounded-full border border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400"
                                 >
-                                    <div className={`w-full h-full ${selectedStatus === 'PENDING' ? 'bg-yellow-400' : ''}`} />
+                                    {selectedStatus === 'PENDING' && (
+                                        <div className="absolute inset-0 w-2 h-2 m-auto bg-yellow-400 rounded-full" />
+                                    )}
                                 </RadioGroup.Item>
                                 <label htmlFor="pending-bulk">Pending</label>
                             </div>
@@ -256,9 +321,11 @@ export function TabRow({
                                 <RadioGroup.Item
                                     value="ACCEPTED"
                                     id="accepted-bulk"
-                                    className="w-4 h-4 rounded-full border border-gray-400"
+                                    className="relative w-4 h-4 rounded-full border border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-800"
                                 >
-                                    <div className={`w-full h-full ${selectedStatus === 'ACCEPTED' ? 'bg-green-800' : ''}`} />
+                                    {selectedStatus === 'ACCEPTED' && (
+                                        <div className="absolute inset-0 w-2 h-2 m-auto bg-green-800 rounded-full" />
+                                    )}
                                 </RadioGroup.Item>
                                 <label htmlFor="accepted-bulk">Accepted</label>
                             </div>
@@ -266,9 +333,11 @@ export function TabRow({
                                 <RadioGroup.Item
                                     value="REFUSED"
                                     id="refused-bulk"
-                                    className="w-4 h-4 rounded-full border border-gray-400"
+                                    className="relative w-4 h-4 rounded-full border border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-800"
                                 >
-                                    <div className={`w-full h-full ${selectedStatus === 'REFUSED' ? 'bg-red-800' : ''}`} />
+                                    {selectedStatus === 'REFUSED' && (
+                                        <div className="absolute inset-0 w-2 h-2 m-auto bg-red-800 rounded-full" />
+                                    )}
                                 </RadioGroup.Item>
                                 <label htmlFor="refused-bulk">Refused</label>
                             </div>
@@ -349,19 +418,16 @@ export function TabRow({
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
+            {/* Chat Modal */}
+            {openChatDialog && currentCandidacy && (
+                <Chat
+                    recruiterPhoto="https://github.com/shadcn.png"
+                    studentPhoto={currentCandidacy.studentPhoto}
+                    studentName={currentCandidacy.studentName}
+                    onClose={() => setOpenChatDialog(false)}
+                />
+            )}
         </>
     );
-}
-
-function getBadgeVariant(status: string) {
-    switch (status) {
-        case 'PENDING':
-            return 'outline';
-        case 'ACCEPTED':
-            return 'default';
-        case 'REFUSED':
-            return 'destructive';
-        default:
-            return 'outline';
-    }
 }

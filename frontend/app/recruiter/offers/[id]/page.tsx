@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody } from '@/components/ui/table';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
-import { TabHeader, TabRow } from './tableCandidacies';
-import { mockCandidacies, Candidacy } from './mockCandidacies';
+import { TabHeader, TabRow } from './components/table';
+import { mockCandidacies, Candidacy } from './data/mockCandidacies';
 
 export default function Dashboard() {
   const [selectedCandidates, setSelectedCandidates] = useState<number[]>([]);
