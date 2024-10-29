@@ -1,18 +1,33 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody } from '@/components/ui/table';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { TabHeader, TabRow } from './components/table';
-import { mockCandidacies, Candidacy } from './data/mockCandidacies';
+import { useGetCandidaciesByOfferId } from './hooks/useGetCandidaciesByOfferId';
+import { useParams } from 'next/navigation';
 
 export default function Dashboard() {
   const [selectedCandidates, setSelectedCandidates] = useState<number[]>([]);
+  const [offerId, setOfferId] = useState<number | undefined>(undefined);
+  const params = useParams();
 
-  const candidacies: Candidacy[] = mockCandidacies;
+  useEffect(() => {
+    if (params?.id) {
+      setOfferId(parseInt(params.id as string, 10));
+    }
+  }, [params?.id]);
+
+  const { data, isLoading, error, refresh } = useGetCandidaciesByOfferId(offerId);
+  const candidacies = data?.candidacies || [];
+
   const selectAllCandidates = (isSelected: boolean) => {
-    setSelectedCandidates(isSelected ? candidacies.map(c => c.id) : []);
+    setSelectedCandidates(isSelected ? candidacies.map((c: { id: any }) => c.id) : []);
   };
+
+  if (!offerId) return <p>Loading offer information...</p>;
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading data</p>;
 
   return (
       <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
