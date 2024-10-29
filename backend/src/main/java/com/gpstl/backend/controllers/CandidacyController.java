@@ -4,6 +4,7 @@ import com.gpstl.backend.contexts.UserContext;
 import com.gpstl.backend.dtos.CandidacyDto;
 import com.gpstl.backend.mappers.CandidacyMapper;
 import com.gpstl.backend.models.candidacy.Candidacy;
+import com.gpstl.backend.payloads.response.CandidacyResponse;
 import com.gpstl.backend.services.CandidacyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,12 @@ import java.util.stream.Collectors;
 public class CandidacyController {
     
     private final CandidacyService candidacyService;
+
+    @GetMapping("/offer/{offerId}")
+    public ResponseEntity<List<CandidacyResponse>> getCandidaciesByOfferId(@PathVariable Long offerId) {
+        List<CandidacyResponse> candidacies = candidacyService.getCandidaciesByOfferId(offerId);
+        return ResponseEntity.ok(candidacies);
+    }
 
     @GetMapping
     public ResponseEntity<List<CandidacyDto>> getAllCandidacies() {
