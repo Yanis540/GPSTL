@@ -10,13 +10,13 @@ public class RecruiterMapper {
 
     public static RecruiterDto toDto(Recruiter recruiter) {
         RecruiterDto recruiterDto = modelMapper.map(recruiter, RecruiterDto.class);
-        recruiterDto.setOffers(OfferMapper.toDtoList(recruiter.getOffers()));
+        recruiterDto.setCompany(CompanyMapper.toDto(recruiter.getCompany()));
         return recruiterDto;
     }
 
     public static Recruiter toEntity(RecruiterDto recruiterDto) {
         Recruiter recruiter = modelMapper.map(recruiterDto, Recruiter.class);
-        recruiter.setOffers(OfferMapper.toEntityList(recruiterDto.getOffers()));
+        recruiter.setCompany(CompanyMapper.toEntity(recruiterDto.getCompany()));
         return recruiter;
     }
 }

@@ -1,13 +1,16 @@
 ### Create a new offer (id = 1)
 POST http://localhost:8080/offer
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWNydWl0ZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE3MzA1MDg0OTMsImV4cCI6MTczMTgwNDQ5M30.rd8Fgw_qTNQmF7uFXZvIlT58-lCqpmx_IXumFWQEPms
 
 {
   "name": "DevOps",
   "salary": 1730.00,
   "rhythm": "Full-time",
   "description": "Join our dynamic team of software engineers to build cutting-edge applications.",
-  "recruiterId": 1
+  "recruiter": {
+    "id": 1
+  }
 }
 ###
 GET http://localhost:8080/offer
