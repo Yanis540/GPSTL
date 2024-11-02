@@ -18,6 +18,6 @@ public class OfferDto {
     private String rhythm;
     private String description;
     private Date publicationDate;
-    private UserDto recruiter;
+    private RecruiterDto recruiter;
 }
 

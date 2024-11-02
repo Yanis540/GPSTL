@@ -75,7 +75,7 @@ declare global {
         rhythm: string;
         description: string;
         publicationDate: string;
-        recruiter: User;
+        recruiter: Recruiter;
     }
 
     type RecruiterOfferData = Offer& {

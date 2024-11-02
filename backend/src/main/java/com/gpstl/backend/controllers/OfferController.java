@@ -3,8 +3,9 @@ package com.gpstl.backend.controllers;
 import com.gpstl.backend.contexts.UserContext;
 import com.gpstl.backend.dtos.OfferDto;
 import com.gpstl.backend.mappers.OfferMapper;
-import com.gpstl.backend.mappers.UserMapper;
+import com.gpstl.backend.mappers.RecruiterMapper;
 import com.gpstl.backend.models.Offer;
+import com.gpstl.backend.models.user.Recruiter;
 import com.gpstl.backend.models.user.Role;
 import com.gpstl.backend.models.user.User;
 import com.gpstl.backend.services.OfferService;
@@ -73,7 +74,7 @@ public class OfferController {
             if(user.getRole() == Role.STUDENT)
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             System.out.println(">>>>>>>>>>"+offerToCreate);
-            offerToCreate.setRecruiter(UserMapper.toDto(user));
+            offerToCreate.setRecruiter(RecruiterMapper.toDto((Recruiter) user));
             Offer offer = offerService.createOffer(OfferMapper.toEntity(offerToCreate));
             return new ResponseEntity<>(OfferMapper.toDto(offer), HttpStatus.CREATED);
         } catch (Exception e) {
