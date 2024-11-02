@@ -57,6 +57,7 @@ export const Swipe: React.FC<OfferProps> = ({offers}) => {
         onSwipedRight: () => handleSwipe('right'),
         trackMouse: true
     });
+    const capgeminiLogo = "https://companieslogo.com/img/orig/CAP.PA-9b4110b0.png?t=1720244491"
 
     return (
         <main className="flex-2 mx-auto bg-gpstl-white-color items-center justify-center min-h-screen bg-cover bg-center">
@@ -84,7 +85,7 @@ export const Swipe: React.FC<OfferProps> = ({offers}) => {
                                         <CardContent className="p-6 flex flex-col items-center">
                                             <div className="w-32 h-32 relative mb-4">
                                                 <Image
-                                                    src={!offer.recruiter.photo ? "" : offer.recruiter.photo}
+                                                    src={!offer.recruiter.photo ? capgeminiLogo : offer.recruiter.photo}
                                                     alt={`TechCorp.png logo`}
                                                     fill
                                                     style={{ objectFit: 'contain' }}

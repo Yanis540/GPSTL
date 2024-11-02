@@ -3,6 +3,7 @@ package com.gpstl.backend.services;
 import com.gpstl.backend.models.candidacy.Candidacy;
 import com.gpstl.backend.models.candidacy.CandidacyStatus;
 import com.gpstl.backend.models.user.Student;
+import com.gpstl.backend.payloads.response.CandidacyResponse;
 import com.gpstl.backend.repositories.CandidacyRepository;
 import com.gpstl.backend.repositories.OfferRepository;
 import com.gpstl.backend.repositories.UserRepository;
@@ -20,6 +21,10 @@ public class CandidacyService {
     private final CandidacyRepository candidacyRepository;
     private final UserRepository userRepository;
     private final OfferRepository offerRepository;
+
+    public List<CandidacyResponse> getCandidaciesByOfferId(Long offerId) {
+        return candidacyRepository.findCandidaciesByOfferIdWithUserDetails(offerId);
+    }
 
     public List<Candidacy> getAllCandidacies() {
         return candidacyRepository.findAll();

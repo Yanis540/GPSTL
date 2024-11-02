@@ -66,6 +66,9 @@ declare global {
         offer?: Offer;
         studentId?: number; // bigint, optional
         status: CandidacyStatus // varchar(255) with enum values
+        firstName: string
+        lastName: string
+        photo ?: string
     }
 
     interface Offer {
